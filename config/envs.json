@@ -1,0 +1,14 @@
+[
+  {
+    "source_key": "ENV_VARIABLE1",
+    "env_key": "BKAPP_ENV_VARIABLE1",
+    "examples": "value1",
+    "desc": "环境变量案例，source_key是SaaS中settings配置需要的变量，env_key是在蓝鲸PaaS平台开发者中心配置应用环境变量的变量名，必须以BKAPP_为前缀"
+  },
+  {
+    "source_key": "ENV_VARIABLE2",
+    "env_key": "BKAPP_ENV_VARIABLE2",
+    "examples": "value2",
+    "desc": "推荐在开发时，settings中支持从环境变量获取的值设置为 ENV_VARIABLE2=os.getenv('BKAPP_ENV_VARIABLE2'， 'default or None')"
+  }
+]

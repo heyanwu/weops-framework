@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>VUE框架</title>
+    <link href="<%= htmlWebpackPlugin.options.staticUrl %>img/{{ APP_CODE }}.png" rel="shortcut icon" type="image/x-icon">
+</head>
+<body>
+<script>
+    if ('{{ RUN_MODE }}' === 'DEVELOP') {
+        window.siteUrl = window.location.origin
+    } else {
+        window.siteUrl = '{{ BK_PLAT_HOST }}{{ SITE_URL }}'
+    }
+    window.APP_CODE = '{{ APP_CODE }}';
+    window.CSRF_COOKIE_NAME = '{{ CSRF_COOKIE_NAME }}';
+</script>
+<div id="app"></div>
+<script type=text/javascript src="<%= htmlWebpackPlugin.options.staticUrl %>dll/vendors.dll.js"></script>
+<script type=text/javascript src="<%= htmlWebpackPlugin.options.staticUrl %>dll/jquery.dll.js"></script>
+<script type=text/javascript src="<%= htmlWebpackPlugin.options.staticUrl %>dll/bkMagicVue.dll.js"></script>
+<script type=text/javascript src="<%= htmlWebpackPlugin.options.staticUrl %>dll/antv.dll.js"></script>
+<script type=text/javascript src="<%= htmlWebpackPlugin.options.staticUrl %>dll/echarts.dll.js"></script>
+</body>
+</html>
