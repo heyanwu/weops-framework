@@ -1,8 +1,11 @@
 APP_NAME=$1
-VERSION=$2
+APP_CODE=$2
+VERSION=$3
+
+rm -Rf /codes/dist
 cd /codes
 pip install -i https://mirrors.cloud.tencent.com/pypi/simple -r /codes/support-files/smart/requirements.txt
-python ./support-files/smart/smart.py release
+python ./support-files/smart/smart.py release --app_code=$APP_CODE --app_name=$APP_NAME --version=$VERSION
 
 mkdir -p /saas/$APP_NAME
 mkdir -p /saas/$APP_NAME/pkgs

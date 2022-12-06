@@ -40,3 +40,12 @@ except ImportError as e:
 for _setting in dir(_module):
     if _setting == _setting.upper():
         locals()[_setting] = getattr(_module, _setting)
+
+try:
+    saas_conf_module = "config.settings_saas"
+    saas_module = __import__(saas_conf_module, globals(), locals(), ['*'])
+    for saas_setting in dir(saas_module):
+        if saas_setting == saas_setting.upper():
+            locals()[saas_setting] = getattr(saas_module, saas_setting)
+except:
+    pass
