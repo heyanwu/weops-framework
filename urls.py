@@ -22,7 +22,7 @@ urlpatterns = [
     # 这里的 home_application 可以改成你想要的名字
     url(r"^", include("home_application.urls")),
     url(r"^i18n/", include("django.conf.urls.i18n")),
-    url(r"^index/", include("apps.index.urls")),
+    # url(r"^index/", include("apps.index.urls")),
 ]
 
 if settings.RUN_MODE == "DEVELOP":
