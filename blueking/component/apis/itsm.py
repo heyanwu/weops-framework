@@ -28,7 +28,7 @@ class CollectionsITSM(object):
         )
         self.get_services = ComponentAPI(
             client=self.client,
-            method="GET",
+            method="POST",
             path="/api/c/compapi{bk_api_ver}/itsm/get_services/",
             description=u"服务列表查询",
         )

@@ -4,8 +4,6 @@ import hashlib
 import hmac
 import json
 
-from .compat import str
-
 
 def get_signature(method, path, app_secret, params=None, data=None):
     """generate signature"""

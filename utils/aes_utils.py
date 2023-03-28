@@ -1,8 +1,9 @@
-# -- coding: utf-8 --
+# -*- coding: utf-8 -*-
 
-# @File : aes_utils.py
-# @Time : 2022/11/17 16:14
-# @Author : windyzhao
+# @File    : aes_utils.py
+# @Date    : 2022-06-13
+# @Author  : windyzhao
+
 import base64
 
 from Crypto.Cipher import AES

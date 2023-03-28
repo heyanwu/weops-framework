@@ -71,12 +71,6 @@ class CollectionsCC(object):
             path="/api/c/compapi{bk_api_ver}/cc/clone_host_property/",
             description=u"克隆主机属性",
         )
-        self.create_biz_custom_field = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/create_biz_custom_field/",
-            description=u"创建业务自定义模型属性",
-        )
         self.create_business = ComponentAPI(
             client=self.client,
             method="POST",
@@ -143,12 +137,6 @@ class CollectionsCC(object):
         self.create_set = ComponentAPI(
             client=self.client, method="POST", path="/api/c/compapi{bk_api_ver}/cc/create_set/", description=u"创建集群"
         )
-        self.create_set_template = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/create_set_template/",
-            description=u"新建集群模板",
-        )
         self.delete_business = ComponentAPI(
             client=self.client,
             method="POST",
@@ -163,7 +151,7 @@ class CollectionsCC(object):
         )
         self.delete_cloud_area = ComponentAPI(
             client=self.client,
-            method="POST",
+            method="DELETE",
             path="/api/c/compapi{bk_api_ver}/cc/delete_cloud_area/",
             description=u"删除云区域",
         )
@@ -236,41 +224,11 @@ class CollectionsCC(object):
         self.delete_set = ComponentAPI(
             client=self.client, method="POST", path="/api/c/compapi{bk_api_ver}/cc/delete_set/", description=u"删除集群"
         )
-        self.delete_set_template = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/delete_set_template/",
-            description=u"删除集群模板",
-        )
-        self.find_host_biz_relations = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/find_host_biz_relations/",
-            description=u"查询主机业务关系信息",
-        )
         self.find_host_by_module = ComponentAPI(
             client=self.client,
             method="POST",
             path="/api/c/compapi{bk_api_ver}/cc/find_host_by_module/",
             description=u"根据模块查询主机",
-        )
-        self.find_host_by_service_template = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/find_host_by_service_template/",
-            description=u"查询服务模板下的主机",
-        )
-        self.find_host_by_set_template = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/find_host_by_set_template/",
-            description=u"查询集群模板下的主机",
-        )
-        self.find_host_snapshot_batch = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/find_host_snapshot_batch/",
-            description=u"批量查询主机快照",
         )
         self.find_host_topo_relation = ComponentAPI(
             client=self.client,
@@ -284,41 +242,17 @@ class CollectionsCC(object):
             path="/api/c/compapi{bk_api_ver}/cc/find_instance_association/",
             description=u"查询模型实例之间的关联关系",
         )
-        self.find_module_batch = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/find_module_batch/",
-            description=u"批量查询某业务的模块详情",
-        )
-        self.find_module_host_relation = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/find_module_host_relation/",
-            description=u"根据模块ID查询主机和模块的关系",
-        )
         self.find_object_association = ComponentAPI(
             client=self.client,
             method="POST",
             path="/api/c/compapi{bk_api_ver}/cc/find_object_association/",
             description=u"查询模型之间的关联关系",
         )
-        self.find_set_batch = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/find_set_batch/",
-            description=u"批量查询某业务的集群详情",
-        )
-        self.find_topo_node_paths = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/find_topo_node_paths/",
-            description=u"查询业务拓扑节点的拓扑路径",
-        )
         self.get_biz_internal_module = ComponentAPI(
             client=self.client,
             method="GET",
             path="/api/c/compapi{bk_api_ver}/cc/get_biz_internal_module/",
-            description=u"查询业务的空闲机/故障机/待回收模块",
+            description=u"查询业务的空闲机和故障机模块",
         )
         self.get_custom_query_data = ComponentAPI(
             client=self.client,
@@ -356,11 +290,23 @@ class CollectionsCC(object):
             path="/api/c/compapi{bk_api_ver}/cc/get_proc_template/",
             description=u"获取进程模板",
         )
+        self.get_role_privilege = ComponentAPI(
+            client=self.client,
+            method="GET",
+            path="/api/c/compapi{bk_api_ver}/cc/get_role_privilege/",
+            description=u"获取角色绑定权限",
+        )
         self.get_service_template = ComponentAPI(
             client=self.client,
             method="GET",
             path="/api/c/compapi{bk_api_ver}/cc/get_service_template/",
             description=u"获取服务模板",
+        )
+        self.host_install_bk = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/host_install_bk/",
+            description=u"更新主机的云区域字段",
         )
         self.list_biz_hosts = ComponentAPI(
             client=self.client,
@@ -392,11 +338,11 @@ class CollectionsCC(object):
             path="/api/c/compapi{bk_api_ver}/cc/list_process_instance/",
             description=u"查询进程实例列表",
         )
-        self.list_resource_pool_hosts = ComponentAPI(
+        self.list_process_detail_by_ids = ComponentAPI(
             client=self.client,
             method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/list_resource_pool_hosts/",
-            description=u"查询资源池中的主机",
+            path="/api/c/compapi{bk_api_ver}/cc/list_process_detail_by_ids/",
+            description=u"查询某业务下进程ID对应的进程详情",
         )
         self.list_service_category = ComponentAPI(
             client=self.client,
@@ -428,29 +374,11 @@ class CollectionsCC(object):
             path="/api/c/compapi{bk_api_ver}/cc/list_service_template/",
             description=u"服务模板列表查询",
         )
-        self.list_set_template = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/list_set_template/",
-            description=u"查询集群模板",
-        )
-        self.list_set_template_related_service_template = ComponentAPI(
-            client=self.client,
-            method="GET",
-            path="/api/c/compapi{bk_api_ver}/cc/list_set_template_related_service_template/",
-            description=u"获取某集群模版下的服务模版列表",
-        )
         self.remove_label_from_service_instance = ComponentAPI(
             client=self.client,
             method="POST",
             path="/api/c/compapi{bk_api_ver}/cc/remove_label_from_service_instance/",
             description=u"从服务实例移除标签",
-        )
-        self.resource_watch = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/resource_watch/",
-            description=u"监听资源变化事件",
         )
         self.search_biz_inst_topo = ComponentAPI(
             client=self.client,
@@ -536,11 +464,23 @@ class CollectionsCC(object):
             path="/api/c/compapi{bk_api_ver}/cc/search_object_topo/",
             description=u"查询普通模型拓扑",
         )
+        self.search_object_topo_graphics = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/search_object_topo_graphics/",
+            description=u"查询拓扑图",
+        )
         self.search_objects = ComponentAPI(
             client=self.client, method="POST", path="/api/c/compapi{bk_api_ver}/cc/search_objects/", description=u"查询模型"
         )
         self.search_set = ComponentAPI(
             client=self.client, method="POST", path="/api/c/compapi{bk_api_ver}/cc/search_set/", description=u"查询集群"
+        )
+        self.search_related_inst_asso = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/search_related_inst_asso/",
+            description=u"查询某实例所有的关联关系",
         )
         self.search_subscription = ComponentAPI(
             client=self.client,
@@ -548,23 +488,17 @@ class CollectionsCC(object):
             path="/api/c/compapi{bk_api_ver}/cc/search_subscription/",
             description=u"查询订阅",
         )
-        self.search_topo_tree = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/search_topo_tree/",
-            description=u"搜索业务拓扑树",
-        )
         self.subscribe_event = ComponentAPI(
             client=self.client,
             method="POST",
             path="/api/c/compapi{bk_api_ver}/cc/subscribe_event/",
             description=u"订阅事件",
         )
-        self.sync_set_template_to_set = ComponentAPI(
+        self.testing_connection = ComponentAPI(
             client=self.client,
             method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/sync_set_template_to_set/",
-            description=u"集群模板同步",
+            path="/api/c/compapi{bk_api_ver}/cc/testing_connection/",
+            description=u"测试推送（只测试连通性）",
         )
         self.transfer_host_module = ComponentAPI(
             client=self.client,
@@ -607,12 +541,6 @@ class CollectionsCC(object):
             method="POST",
             path="/api/c/compapi{bk_api_ver}/cc/unsubcribe_event/",
             description=u"退订事件",
-        )
-        self.update_biz_custom_field = ComponentAPI(
-            client=self.client,
-            method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/update_biz_custom_field/",
-            description=u"更新业务自定义模型属性",
         )
         self.update_business = ComponentAPI(
             client=self.client,
@@ -707,9 +635,57 @@ class CollectionsCC(object):
         self.update_set = ComponentAPI(
             client=self.client, method="POST", path="/api/c/compapi{bk_api_ver}/cc/update_set/", description=u"更新集群"
         )
-        self.update_set_template = ComponentAPI(
+        self.list_operation_audit = ComponentAPI(
             client=self.client,
             method="POST",
-            path="/api/c/compapi{bk_api_ver}/cc/update_set_template/",
-            description=u"编辑集群模板",
+            path="/api/c/compapi{bk_api_ver}/cc/list_operation_audit/",
+            description=u"查询操作审计",
+        )
+        self.find_audit_by_id = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/find_audit_by_id/",
+            description=u"查询操作审计详情",
+        )
+        self.find_host_biz_relations = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/find_host_biz_relations/",
+            description=u"查询主机的业务关系",
+        )
+        self.search_related_inst_asso = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/search_related_inst_asso/",
+            description=u"查询某实例所有的关联关系",
+        )
+        self.delete_related_inst_asso = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/delete_related_inst_asso/",
+            description=u"根据实例关联关系的ID删除实例之间的关联",
+        )
+        self.find_host_biz_relations = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/find_host_biz_relations/",
+            description=u"根据主机ID查询业务相关信息",
+        )
+        self.find_host_by_topo = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/find_host_by_topo/",
+            description=u"查询拓扑节点下的主机",
+        )
+        self.list_resource_pool_hosts = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/list_resource_pool_hosts/",
+            description=u"查询资源池中的主机",
+        )
+        self.find_module_with_relation = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/find_module_with_relation/",
+            description=u"查询业务下的模块",
         )

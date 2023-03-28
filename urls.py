@@ -10,6 +10,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
+import os
 
 from django.conf import settings
 from django.conf.urls import include, url
@@ -20,11 +21,15 @@ urlpatterns = [
     url(r"^account/", include("blueapps.account.urls")),
     # 如果你习惯使用 Django 模板，请在 home_application 里开发你的应用，
     # 这里的 home_application 可以改成你想要的名字
-    url(r"^", include("home_application.urls")),
+    url(r"^", include("base_index.urls")),
+    # 如果你习惯使用 mako 模板，请在 mako_application 里开发你的应用，
+    # 这里的 mako_application 可以改成你想要的名字
     url(r"^i18n/", include("django.conf.urls.i18n")),
-    # url(r"^index/", include("apps.index.urls")),
 ]
-
+apps = os.listdir("apps") + os.listdir("apps_other")
+dir_list = [i for i in apps if not (i.startswith("__") or i.startswith(".")) and i not in ["system_mgmt"]]
+for i in dir_list:
+    urlpatterns.append(url(r"^{}/".format(i), include(f"apps.{i}.urls")))  # noqa
 if settings.RUN_MODE == "DEVELOP":
     """
     开发时添加SWAGGER API DOC
@@ -34,3 +39,10 @@ if settings.RUN_MODE == "DEVELOP":
 
     schema_view = get_swagger_view(title="%s API" % settings.APP_ID.upper())
     urlpatterns += [url(r"^docs/$", schema_view)]
+
+try:
+    from custom_urls import urlpatterns as custom_url
+
+    urlpatterns += custom_url
+except ImportError:
+    pass

@@ -41,11 +41,39 @@ for _setting in dir(_module):
     if _setting == _setting.upper():
         locals()[_setting] = getattr(_module, _setting)
 
+INSTALLED_APPS = locals()["INSTALLED_APPS"]
+CELERY_IMPORTS = locals()["CELERY_IMPORTS"]
+MIDDLEWARE = locals()["MIDDLEWARE"]
+
+
 try:
-    saas_conf_module = "config.settings_saas"
-    saas_module = __import__(saas_conf_module, globals(), locals(), ['*'])
-    for saas_setting in dir(saas_module):
-        if saas_setting == saas_setting.upper():
-            locals()[saas_setting] = getattr(saas_module, saas_setting)
-except:
+    __module = __import__(f"home_application.config", globals(), locals(), ["*"])
+except ImportError:
     pass
+else:
+    for _setting in dir(__module):
+        if _setting == _setting.upper():
+            locals()[_setting] = getattr(__module, _setting)
+        elif _setting == "app_name":
+            INSTALLED_APPS += getattr(__module, _setting)
+        elif _setting == "celery_tasks":
+            CELERY_IMPORTS += getattr(__module, _setting)
+
+apps = os.listdir("apps") + os.listdir("apps_other")
+dir_list = [i for i in apps if not (i.startswith("__") or i.startswith("."))]
+
+for i in dir_list:
+    try:
+        __module = __import__(f"apps.{i}.config", globals(), locals(), ["*"])
+    except ImportError:
+        pass
+    else:
+        for _setting in dir(__module):
+            if _setting == _setting.upper():
+                locals()[_setting] = getattr(__module, _setting)
+            elif _setting == "app_name":
+                INSTALLED_APPS += (getattr(__module, _setting),)
+            elif _setting == "celery_tasks":
+                CELERY_IMPORTS += getattr(__module, _setting)
+            elif _setting == "add_middleware":
+                MIDDLEWARE += getattr(__module, _setting)

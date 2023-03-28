@@ -29,7 +29,7 @@ ROOT_URLCONF = "urls"
 SITE_ID = 1
 
 INSTALLED_APPS = (
-    "bkoauth",
+    # "bkoauth",
     # 框架自定义命令
     "blueapps.contrib.bk_commands",
     "django.contrib.admin",
@@ -46,6 +46,7 @@ INSTALLED_APPS = (
 MIDDLEWARE = (
     # request instance provider
     "blueapps.middleware.request_provider.RequestProvider",
+    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -53,7 +54,6 @@ MIDDLEWARE = (
     "django.contrib.messages.middleware.MessageMiddleware",
     # 跨域检测中间件， 默认关闭
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "django.middleware.security.SecurityMiddleware",
     # 蓝鲸静态资源服务
     "whitenoise.middleware.WhiteNoiseMiddleware",
     # Auth middleware
@@ -85,7 +85,11 @@ CACHES["default"] = CACHES["dummy"]
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": (os.path.join(BASE_DIR, "static"),),
+        # "DIRS": (os.path.join(BASE_DIR, "templates"), os.path.join(BASE_DIR, "static/weixin/")),
+        "DIRS": (
+            os.path.join(BASE_DIR, "static/dist"),
+            os.path.join(BASE_DIR, "templates"),
+        ),
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -130,6 +134,8 @@ AUTHENTICATION_BACKENDS = (
 RE_MOBILE = re.compile(r"Mobile|Android|iPhone|iPad|iPod", re.IGNORECASE)
 RE_WECHAT = re.compile(r"MicroMessenger", re.IGNORECASE)
 
+# CSRF Config
+CSRF_COOKIE_NAME = "_".join([APP_CODE, "csrftoken"])
 
 # close celery hijack root logger
 CELERYD_HIJACK_ROOT_LOGGER = False
@@ -139,6 +145,3 @@ LOG_DIR_PREFIX = "/app/v3logs/"
 
 # 登录缓存时间配置, 单位秒（与django cache单位一致）
 LOGIN_CACHE_EXPIRED = 60
-
-# CELERY与RabbitMQ增加60秒心跳设置项
-BROKER_HEARTBEAT = 60

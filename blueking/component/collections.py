@@ -5,8 +5,11 @@ from .apis.bk_paas import CollectionsBkPaas
 from .apis.cc import CollectionsCC
 from .apis.cmsi import CollectionsCMSI
 from .apis.gse import CollectionsGSE
+from .apis.iam import CollectionsIAM
 from .apis.itsm import CollectionsITSM
 from .apis.job import CollectionsJOB
+from .apis.monitor import CollectionsMonitor
+from .apis.nodeman import CollectionsNodeMan
 from .apis.sops import CollectionsSOPS
 from .apis.usermanage import CollectionsUSERMANAGE
 
@@ -21,4 +24,7 @@ AVAILABLE_COLLECTIONS = {
     "job": CollectionsJOB,
     "sops": CollectionsSOPS,
     "usermanage": CollectionsUSERMANAGE,
+    "nodeman": CollectionsNodeMan,
+    "iam": CollectionsIAM,
+    "monitor": CollectionsMonitor
 }

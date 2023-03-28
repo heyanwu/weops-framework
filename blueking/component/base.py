@@ -2,6 +2,8 @@
 import json
 import logging
 
+from utils.performance import fn_performance
+
 from .conf import COMPONENT_SYSTEM_HOST
 from .exceptions import ComponentAPIException
 
@@ -34,10 +36,7 @@ class ComponentAPI(object):
             return self._call(*args, **kwargs)
         except ComponentAPIException as e:
             # Combine log message
-            log_message = [
-                e.error_message,
-            ]
-            log_message.append("url={url}".format(url=e.api_obj.url))
+            log_message = [e.error_message, "url={url}".format(url=e.api_obj.url)]
             if e.resp:
                 log_message.append("content: %s" % e.resp.text)
 
@@ -47,10 +46,11 @@ class ComponentAPI(object):
             if e.resp is not None:
                 try:
                     return e.resp.json()
-                except Exception:
+                except (TypeError, ValueError):
                     pass
             return {"result": False, "message": e.error_message, "data": None}
 
+    @fn_performance(show_param=False)
     def _call(self, *args, **kwargs):
         params, data = {}, {}
         if args and isinstance(args[0], dict):

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """Component API Client
 """
-import json
-import logging
-import random
-import time
-
 import requests
+import json
+import time
+import random
+import logging
 
-from . import collections, conf
 from .compat import urlparse
+from . import conf
+from . import collections
 from .utils import get_signature
 
 # shutdown urllib3's warning
@@ -89,6 +89,12 @@ class BaseComponentClient(object):
         elif method == "POST":
             _data = common_args.copy()
             _data.update(data or {})
+            data = json.dumps(_data)
+        elif method == "DELETE":
+            # 此处为了兼容权限中心删除用户组，将数据放入了data中进行传参
+            _data = common_args.copy()
+            _data.update(data or {})
+            _data.update(params)
             data = json.dumps(_data)
         return params, data
 

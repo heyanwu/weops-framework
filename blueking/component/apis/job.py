@@ -155,3 +155,39 @@ class CollectionsJOB(object):
             path="/api/c/compapi{bk_api_ver}/job/get_task_result/",
             description=u"根据作业实例 ID 查询作业执行状态",
         )
+        self.fast_transfer_file = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi/v2/jobv3/fast_transfer_file/",
+            description=u"V3快速分发文件",
+        )
+        self.fast_execute_script_v3 = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/jobv3/fast_execute_script/",
+            description=u"快速执行脚本",
+        )
+        self.get_job_instance_status_v3 = ComponentAPI(
+            client=self.client,
+            method="GET",
+            path="/api/c/compapi{bk_api_ver}/jobv3/get_job_instance_status/",
+            description=u"根据作业实例 ID 查询作业执行状态",
+        )
+        self.get_job_instance_ip_log_v3 = ComponentAPI(
+            client=self.client,
+            method="GET",
+            path="/api/c/compapi{bk_api_ver}/jobv3/get_job_instance_ip_log/",
+            description=u"根据ip查询作业执行日志",
+        )
+        self.batch_get_job_instance_ip_log_v3 = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/jobv3/batch_get_job_instance_ip_log/",
+            description=u"根据ip列表批量查询作业执行日志",
+        )
+        self.operate_job_instance = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/jobv3/operate_job_instance/",
+            description=u"用于对执行的作业实例进行操作，例如终止作业。",
+        )
