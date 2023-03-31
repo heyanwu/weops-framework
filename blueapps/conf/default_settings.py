@@ -29,7 +29,7 @@ ROOT_URLCONF = "urls"
 SITE_ID = 1
 
 INSTALLED_APPS = (
-    # "bkoauth",
+    "bkoauth",
     # 框架自定义命令
     "blueapps.contrib.bk_commands",
     "django.contrib.admin",
