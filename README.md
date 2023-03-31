@@ -15,27 +15,112 @@ https://bk.tencent.com/s-mart/application/282/detail
 
 ## 开发使用
 
-### 产品 LOGO
+### 框架目录
+```markdown
+├── apps # 内置应用代码
+├── apps_other # 自定义添加应用代码
+├── base_index # 首页入口文件
+├── blueapps # 蓝鲸内置应用
+├── blueking # 蓝鲸API网关接口
+├── config  # 配置文件
+│    ├── template # 首页变量模板
+│    ├── __init__.py # 基础配置文件
+│    ├── default.py # 基础配置文件
+│    ├── dev.py # 本地开发配置文件
+│    ├── envs.json # 环境变量配置
+│    ├── prod.py # 正式环境配置文件
+│    ├── stag.py # 测试环境配置文件
+├── locale # 语言包
+├── scripts # 脚本文件
+│    ├── check_migrate # 校验提交模型字段
+│    ├── check_commit_message.py # 校验提交信息是否包含规范的前缀
+│    ├── check_requirements # 校验 requirements 是否符合要求
+├── templates
+├── utils # 内置工具包
+├── .flake8 # flake8 效验规则配置
+├── .gitignore
+├── .isort.cfg # isort 规则
+├── .pre-commit-config.yaml # pre-commit 配置
+├── __init__.py
+├── LICENSE
+├── manage.py # 入口文件
+├── pyproject.toml 
+├── README.md
+├── requirements.txt # 应用依赖包
+├── runtime.txt # 应用运行python版本要求
+├── settings.py # 应用基础配置文件
+├── urls.py # 路由文件
+├── wsgi.py # wsgi 配置启动
+```
 
-请将你的产品 LOGO 命名为 "{APP_CODE}.png"（APP_CODE 是你的应用 ID），并分别放在最外层目录和 static/img 目录下。
-最外层目录下的 LOGO 用于通过 "S-mart应用" 方式部署时自动识别产品 LOGO，避免实施团队的需要手动上传 LOGO。
-static/img 目录下的 LOGO 用于浏览器标签页识别 icon，提升产品体验。
 
-## 分支管理
 
-- master
+### 分支管理
 
-master 是主分支。
+- main
 
-- release
+main 是主分支。
 
-release 作为部署和发包分支，在分支代码更新后，触发 GitLab CI 自动从 release 分支获取最新代码，并在 CI 中运行前端打包，然后推送到仓库。
-该分支支持在蓝鲸开发者中心源码部署进行联调测试，后续可以考虑自动部署。
-该分支作为发布分支，支持在实施时通过"一键打包"等工具拉取包含打包好的前端资源的产品代码，并在客户环境通过 "S-mart应用" 方式部署。
+### 集成工具说明
 
-## 集成工具说明
-
-### pre-commit
+#### pre-commit
 
 pre-commit 是基于 Git Hooks 的本地开发套件，支持通过插件扩展能力。目前支持 PEP8 规范检查、代码格式化、commit 信息检查、
 requirements.txt 包检查等功能。
+
+
+### 功能开发
+
+#### 环境安装
+
+> 可使用pipenv,virtualenv,anaconda,此处仅演示anaconda
+
+```shell
+# 创建3.6虚拟环境
+conda create --name auto-mate python=3.6
+# 进入虚拟环境
+conda activate auto-mate
+# 安装环境所需pip包
+pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+# 安装pre-commit
+pip install pre-commit
+pre-commit install --allow-missing-config
+pre-commit install --hook-type commit-msg --allow-missing-config
+```
+#### 正式开发
+1、在`apps_other`目录下新建python包，包名必须以`app_` 开头
+![新建python包](./docs/img/create_apps.jpg)
+2、在对应包下新建`config.py`文件，需要包含以下内容：
+```
+app_name = "app_test" # 应用名称，与新建的python包名保持一致即可
+celery_tasks = ("apps_other.test.celery_tasks",) # celery后台任务文件路径，如果不需要，可以不需要这个变量
+add_middleware = ("apps_other.test.middleware.TestMiddleware",) # app自定义中间件，不需要可以不要这个变量
+# 这里可以将app需要的其它变量配置到这里，注意变量命名须以 APP_ 开头
+```
+![config.py](./docs/img/config.png)
+3、环境变量配置
+如果开发过程中需要使用到环境变量，可以按照如下，选择一个.env文件添加
+![config.py](./docs/img/env.png)
+文件内容格式如下：
+```
+APP_ID=WEOPS
+APP_TOKEN=123456
+```
+
+43、注意事项
+开发过程中不要修改除apps_other目录外的其它文件
+本地开发时，可以在根目录新建local_settings.py文件，并将database相关的配置信息写在里面
+```
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "",  # noqa
+        "USER": "",
+        "PASSWORD": "",
+        "HOST": "",
+        "PORT": "",
+        # 单元测试 DB 配置，建议不改动
+        "TEST": {"NAME": "test_db", "CHARSET": "utf8", "COLLATION": "utf8_general_ci"},
+    },
+}
+```
