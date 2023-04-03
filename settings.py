@@ -45,7 +45,6 @@ INSTALLED_APPS = locals()["INSTALLED_APPS"]
 CELERY_IMPORTS = locals()["CELERY_IMPORTS"]
 MIDDLEWARE = locals()["MIDDLEWARE"]
 
-
 try:
     __module = __import__(f"home_application.config", globals(), locals(), ["*"])
 except ImportError:
@@ -59,21 +58,22 @@ else:
         elif _setting == "celery_tasks":
             CELERY_IMPORTS += getattr(__module, _setting)
 
-apps = os.listdir("apps") + os.listdir("apps_other")
-dir_list = [i for i in apps if not (i.startswith("__") or i.startswith("."))]
+apps = {"apps": os.listdir("apps"), "apps_other": os.listdir("apps_other")}
+for key, app_list in apps.items():
+    dir_list = [i for i in app_list if not (i.startswith("__") or i.startswith("."))]
 
-for i in dir_list:
-    try:
-        __module = __import__(f"apps.{i}.config", globals(), locals(), ["*"])
-    except ImportError:
-        pass
-    else:
-        for _setting in dir(__module):
-            if _setting == _setting.upper():
-                locals()[_setting] = getattr(__module, _setting)
-            elif _setting == "app_name":
-                INSTALLED_APPS += (getattr(__module, _setting),)
-            elif _setting == "celery_tasks":
-                CELERY_IMPORTS += getattr(__module, _setting)
-            elif _setting == "add_middleware":
-                MIDDLEWARE += getattr(__module, _setting)
+    for i in dir_list:
+        try:
+            __module = __import__(f"{key}.{i}.config", globals(), locals(), ["*"])
+        except ImportError:
+            pass
+        else:
+            for _setting in dir(__module):
+                if _setting == _setting.upper():
+                    locals()[_setting] = getattr(__module, _setting)
+                elif _setting == "app_name":
+                    INSTALLED_APPS += (getattr(__module, _setting),)
+                elif _setting == "celery_tasks":
+                    CELERY_IMPORTS += getattr(__module, _setting)
+                elif _setting == "add_middleware":
+                    MIDDLEWARE += getattr(__module, _setting)

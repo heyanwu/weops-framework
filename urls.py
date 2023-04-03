@@ -26,10 +26,15 @@ urlpatterns = [
     # 这里的 mako_application 可以改成你想要的名字
     url(r"^i18n/", include("django.conf.urls.i18n")),
 ]
-apps = os.listdir("apps") + os.listdir("apps_other")
-dir_list = [i for i in apps if not (i.startswith("__") or i.startswith(".")) and i not in ["system_mgmt"]]
-for i in dir_list:
-    urlpatterns.append(url(r"^{}/".format(i), include(f"apps.{i}.urls")))  # noqa
+apps = {
+    "apps": os.listdir("apps"),
+    "apps_other": os.listdir("apps_other")
+}
+for key, app_list in apps.items():
+    dir_list = [i for i in app_list if not (i.startswith("__") or i.startswith(".")) and i not in ["system_mgmt"]]
+    for i in dir_list:
+        urlpatterns.append(url(r"^{}/".format(i), include(f"{key}.{i}.urls")))  # noqa
+
 if settings.RUN_MODE == "DEVELOP":
     """
     开发时添加SWAGGER API DOC

@@ -93,7 +93,7 @@ pre-commit install --hook-type commit-msg --allow-missing-config
 ![新建python包](./docs/img/create_apps.jpg)
 2、在对应包下新建`config.py`文件，需要包含以下内容：
 ```
-app_name = "app_test" # 应用名称，与新建的python包名保持一致即可
+app_name = "apps_other.app_test" # 应用名称，与新建的python包名保持一致并添加前缀apps_other.即可
 celery_tasks = ("apps_other.test.celery_tasks",) # celery后台任务文件路径，如果不需要，可以不需要这个变量
 add_middleware = ("apps_other.test.middleware.TestMiddleware",) # app自定义中间件，不需要可以不要这个变量
 # 这里可以将app需要的其它变量配置到这里，注意变量命名须以 APP_ 开头
