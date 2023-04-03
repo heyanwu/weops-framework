@@ -1,8 +1,12 @@
+from utils.decorators import catch_exception
+
+
 class AppUtils(object):
     def __init__(self):
         pass
 
     @staticmethod
+    @catch_exception
     def interface_call(app_model, app_fun, kwargs):
         m = __import__(app_model, globals(), locals(), ["*"])
         method = getattr(m, app_fun, False)
@@ -10,6 +14,7 @@ class AppUtils(object):
             return method(**kwargs)
 
     @staticmethod
+    @catch_exception
     def class_call(app_model, class_name, app_fun, class_kwargs, fun_kwargs):
         m = __import__(app_model, globals(), locals(), ["*"])
         cls = getattr(m, class_name, False)
@@ -21,6 +26,7 @@ class AppUtils(object):
             return method(**fun_kwargs)
 
     @staticmethod
+    @catch_exception
     def static_class_call(app_model, class_name, app_fun, *fun_args, **fun_kwargs):
         m = __import__(app_model, globals(), locals(), ["*"])
         cls = getattr(m, class_name, False)
@@ -31,6 +37,7 @@ class AppUtils(object):
             return method(*fun_args, **fun_kwargs)
 
     @staticmethod
+    @catch_exception
     def get_model(app_path, model_name):
         m = __import__(app_path, globals(), locals(), ["*"])
         model = getattr(m, model_name, None)
