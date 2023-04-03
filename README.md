@@ -31,6 +31,7 @@ https://bk.tencent.com/s-mart/application/282/detail
 │    ├── prod.py # 正式环境配置文件
 │    ├── stag.py # 测试环境配置文件
 ├── locale # 语言包
+├── packages # drf 配置
 ├── scripts # 脚本文件
 │    ├── check_migrate # 校验提交模型字段
 │    ├── check_commit_message.py # 校验提交信息是否包含规范的前缀

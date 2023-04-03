@@ -64,11 +64,11 @@ casbin-django-orm-adapter==0.0.1
 typing-extensions==3.7.4.3
 hvac==1.0.2
 pycryptodome==3.9.8
-setuptools==59.6.0
+setuptools==56.0.0
 wheel==0.37.1
 
 # weopsproxy
-weopsproxy==1.0.2
+# weopsproxy==1.0.2
 
 PyYAML==6.0
 wrapt==1.14.1
