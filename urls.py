@@ -31,7 +31,7 @@ apps = {
     "apps_other": os.listdir("apps_other")
 }
 for key, app_list in apps.items():
-    dir_list = [i for i in app_list if not (i.startswith("__") or i.startswith(".")) and i not in ["system_mgmt"]]
+    dir_list = [i for i in app_list if os.path.isdir(f"{key}/{i}") and not i.startswith("__")  and i not in ["system_mgmt"]]
     for i in dir_list:
         urlpatterns.append(url(r"^{}/".format(i), include(f"{key}.{i}.urls")))  # noqa
 
