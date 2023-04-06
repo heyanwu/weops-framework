@@ -80,7 +80,7 @@ requirements.txt 包检查等功能。
 # 创建3.6虚拟环境
 conda create --name auto-mate python=3.6
 # 进入虚拟环境
-conda activate auto-mate
+conda activate venv
 # 安装环境所需pip包
 pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 # 安装pre-commit
@@ -99,6 +99,7 @@ add_middleware = ("apps_other.test.middleware.TestMiddleware",) # app自定义�
 # 这里可以将app需要的其它变量配置到这里，注意变量命名须以 APP_ 开头
 ```
 ![config.py](./docs/img/config.png)
+
 3、环境变量配置
 如果开发过程中需要使用到环境变量，可以按照如下，选择一个.env文件添加
 ![config.py](./docs/img/env.png)
@@ -108,7 +109,7 @@ APP_ID=WEOPS
 APP_TOKEN=123456
 ```
 
-43、注意事项
+4、注意事项
 开发过程中不要修改除apps_other目录外的其它文件
 本地开发时，可以在根目录新建local_settings.py文件，并将database相关的配置信息写在里面
 ```
