@@ -56,6 +56,15 @@ class SQLClient(object):
             logger.exception(e)
         cursor.close()
 
+    def execute_fun(self, fun_name):
+        fun = getattr(self, fun_name, None)
+        result = None
+        if fun:
+            result = fun()
+        self.disconnect()
+        return result
+
+
 
 class NativeSql(object):
     """

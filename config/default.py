@@ -255,3 +255,17 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     # "EXCEPTION_HANDLER": "utils.exception_capture.common_exception_handler",
 }
+
+
+HAYSTACK_CONNECTIONS = {
+    "default": {
+        # 使用whoosh引擎
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        # 索引文件路径
+        "PATH": os.path.join(BASE_DIR, "USERRES", "whoosh_index"),  # noqa
+    }
+}
+PROFILE_BUCKET = "weops-profile-private"  # 配置文件桶
+MINIO_PRIVATE_BUCKETS = [
+    PROFILE_BUCKET,
+]
