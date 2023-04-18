@@ -37,9 +37,7 @@ def get_paas_v2_logging_config_dict(is_local, bk_log_dir, log_level):
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
-            "simple": {
-                "format": "%(levelname)s %(message)s \n",
-            },
+            "simple": {"format": "%(levelname)s %(message)s \n"},
             "verbose": {
                 "format": "%(levelname)s [%(asctime)s] %(pathname)s "
                 "%(lineno)d %(funcName)s %(process)d %(thread)d "
@@ -53,19 +51,16 @@ def get_paas_v2_logging_config_dict(is_local, bk_log_dir, log_level):
                 "formatter": "verbose",
                 "filename": os.path.join(log_dir, "component.log"),
                 "maxBytes": 1024 * 1024 * 10,
-                "backupCount": 5,
+                "backupCount": 1,
             },
             "console": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "simple"},
-            "null": {
-                "level": "DEBUG",
-                "class": "logging.NullHandler",
-            },
+            "null": {"level": "DEBUG", "class": "logging.NullHandler"},
             "root": {
                 "class": "logging.handlers.RotatingFileHandler",
                 "formatter": "verbose",
                 "filename": os.path.join(log_dir, "%s.log" % app_code),
                 "maxBytes": 1024 * 1024 * 10,
-                "backupCount": 5,
+                "backupCount": 1,
             },
             "wb_mysql": {
                 "class": "logging.handlers.RotatingFileHandler",
@@ -74,54 +69,35 @@ def get_paas_v2_logging_config_dict(is_local, bk_log_dir, log_level):
                 "maxBytes": 1024 * 1024 * 4,
                 "backupCount": 5,
             },
+            "performance": {
+                "class": "logging.handlers.RotatingFileHandler",
+                "formatter": "verbose",
+                "filename": os.path.join(log_dir, "performance.log"),
+                "maxBytes": 1024 * 1024,
+                "backupCount": 1,
+            },
+            "api_requests": {
+                "class": "logging.handlers.RotatingFileHandler",
+                "formatter": "verbose",
+                "filename": os.path.join(log_dir, "api.log"),
+                "maxBytes": 1024 * 1024 * 10,
+                "backupCount": 1,
+            },
         },
         "loggers": {
             # V2旧版开发框架使用的logger
-            "component": {
-                "handlers": ["component"],
-                "level": "WARNING",
-                "propagate": True,
-            },
-            "django": {
-                "handlers": ["null"],
-                "level": "INFO",
-                "propagate": True,
-            },
-            "django.server": {
-                "handlers": ["console"],
-                "level": log_level,
-                "propagate": True,
-            },
-            "django.request": {
-                "handlers": ["console"],
-                "level": "ERROR",
-                "propagate": True,
-            },
-            "django.db.backends": {
-                "handlers": ["wb_mysql"],
-                "level": log_level,
-                "propagate": True,
-            },
-            "root": {
-                "handlers": ["root"],
-                "level": log_level,
-                "propagate": True,
-            },
+            "component": {"handlers": ["component"], "level": "WARNING", "propagate": True},
+            "django": {"handlers": ["null"], "level": "INFO", "propagate": True},
+            "django.server": {"handlers": ["console"], "level": log_level, "propagate": True},
+            "django.request": {"handlers": ["console"], "level": "ERROR", "propagate": True},
+            "django.db.backends": {"handlers": ["wb_mysql"], "level": log_level, "propagate": True},
+            "root": {"handlers": ["root"], "level": log_level, "propagate": True},
             # V3新版使用的日志
-            "celery": {
-                "handlers": ["root"],
-                "level": log_level,
-                "propagate": True,
-            },
-            "blueapps": {
-                "handlers": ["root"],
-                "level": log_level,
-                "propagate": True,
-            },
-            "app": {
-                "handlers": ["root"],
-                "level": log_level,
-                "propagate": True,
-            },
+            "celery": {"handlers": ["root"], "level": log_level, "propagate": True},
+            "blueapps": {"handlers": ["root"], "level": log_level, "propagate": True},
+            "app": {"handlers": ["root"], "level": log_level, "propagate": True},
+            # 其他saas开放api日志
+            "api": {"handlers": ["api_requests"], "level": "INFO", "propagate": True},
+            "performance": {"handlers": ["performance"], "level": log_level, "propagate": True},
         },
     }

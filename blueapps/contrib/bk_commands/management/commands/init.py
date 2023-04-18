@@ -112,28 +112,19 @@ class Command(BlueTemplateCommand):
         open_requirements_file = os.path.join(top_dir, "requirements-open.txt")
         # v3版本的requirements-v3.txt路径
         v3_requirements_file = os.path.join(top_dir, "requirements-v3.txt")
-        # 公共requirements-common.txt路径
-        common_requirements_file = os.path.join(top_dir, "requirements-common.txt")
-        # paas增强requirements-services.txt路径
-        services_requirements_file = os.path.join(top_dir, "requirements_services.txt")
         # 最终的requirements.txt路径
         requirements_file = os.path.join(top_dir, "requirements.txt")
 
         # open版本包定制
         if run_ver == "open":
             # 保留requirements - open.txt, 并重命名为requirements.txt
-            self.append_requirement_file(common_requirements_file, open_requirements_file)
-            os.remove(open_requirements_file)
             os.remove(v3_requirements_file)
-            os.remove(services_requirements_file)
-            os.rename(common_requirements_file, requirements_file)
+            os.rename(open_requirements_file, requirements_file)
         # v3(ieod,qcloud,clouds,tencent)版本包定制
         else:
-            self.append_requirement_file(common_requirements_file, v3_requirements_file)
             # 保留requirements-v3.txt,并重命名为requirements.txt
             os.remove(open_requirements_file)
-            os.remove(v3_requirements_file)
-            os.rename(common_requirements_file, requirements_file)
+            os.rename(v3_requirements_file, requirements_file)
 
     def confirm_run_ver(self):
         run_ver_choice = list(platform_esb_minimum_version_map.keys())
@@ -153,8 +144,3 @@ class Command(BlueTemplateCommand):
             except ValueError:
                 pass
             result = input("Please select a valid option: ")
-
-    def append_requirement_file(self, common_file, private_file):
-        with open(common_file, "ab") as w:
-            w.write(b"\n")
-            w.write(open(private_file, "rb").read())

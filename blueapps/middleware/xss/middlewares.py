@@ -40,15 +40,15 @@ class CheckXssMiddleware(MiddlewareMixin):
                 getattr(view, "escape_exempt_param", []) if getattr(view, "escape_exempt_param", False) else []
             )
 
-            escapeType = None
+            escape_type = None
             if getattr(view, "escape_script", False):
-                escapeType = "script"
+                escape_type = "script"
             elif getattr(view, "escape_url", False):
-                escapeType = "url"
+                escape_type = "url"
             # get参数转换
-            request.GET = self.__escape_data(request.path, request.GET, escapeType)
+            request.GET = self.__escape_data(request.path, request.GET, escape_type)
             # post参数转换
-            request.POST = self.__escape_data(request.path, request.POST, escapeType)
+            request.POST = self.__escape_data(request.path, request.POST, escape_type)
         except Exception as e:
             logger.error(u"CheckXssMiddleware 转换失败！%s" % e)
         return None
@@ -66,7 +66,7 @@ class CheckXssMiddleware(MiddlewareMixin):
                 try:
                     json.loads(_get_value)
                     is_json = True
-                except Exception:
+                except (TypeError, ValueError):
                     is_json = False
                 # 转义新数据
                 if not is_json:
@@ -146,4 +146,4 @@ class CheckXssMiddleware(MiddlewareMixin):
             "%s" % SITE_URL: ["url"],
         }
         use_script = {}
-        return (use_name, use_url, use_script)
+        return use_name, use_url, use_script

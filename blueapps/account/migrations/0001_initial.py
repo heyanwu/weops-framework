@@ -32,20 +32,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="User",
             fields=[
-                (
-                    "id",
-                    models.AutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
-                    ),
-                ),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID",),),
                 ("password", models.CharField(max_length=128, verbose_name="password")),
-                (
-                    "last_login",
-                    models.DateTimeField(blank=True, null=True, verbose_name="last login"),
-                ),
+                ("last_login", models.DateTimeField(blank=True, null=True, verbose_name="last login"),),
                 (
                     "is_superuser",
                     models.BooleanField(
@@ -98,10 +87,7 @@ class Migration(migrations.Migration):
                         verbose_name="active",
                     ),
                 ),
-                (
-                    "date_joined",
-                    models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),
-                ),
+                ("date_joined", models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),),
                 (
                     "groups",
                     models.ManyToManyField(
@@ -126,23 +112,12 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={
-                "verbose_name": "user",
-                "verbose_name_plural": "users",
-            },
+            options={"verbose_name": "user", "verbose_name_plural": "users"},
         ),
         migrations.CreateModel(
             name="UserProperty",
             fields=[
-                (
-                    "id",
-                    models.AutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
-                    ),
-                ),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID",),),
                 (
                     "key",
                     models.CharField(
@@ -175,16 +150,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name="UserProxy",
-            fields=[],
-            options={
-                "proxy": True,
-                "indexes": [],
-            },
-            bases=("account.user",),
+            name="UserProxy", fields=[], options={"proxy": True, "indexes": []}, bases=("account.user",),
         ),
-        migrations.AlterUniqueTogether(
-            name="userproperty",
-            unique_together={("user", "key")},
-        ),
+        migrations.AlterUniqueTogether(name="userproperty", unique_together={("user", "key")},),
     ]

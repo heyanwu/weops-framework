@@ -10,6 +10,10 @@ Unless required by applicable law or agreed to in writing, software distributed 
 an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
+import logging
+import urllib.error
+import urllib.parse
+import urllib.request
 
 from django.conf import settings
 from django.http import HttpResponseRedirect, JsonResponse
@@ -20,17 +24,19 @@ from blueapps.core.exceptions import BkJwtVerifyError, RioVerifyError
 
 try:
     from django.urls import reverse
-except Exception:
+except ImportError:
     from django.core.urlresolvers import reverse
+
+logger = logging.getLogger("component")
 
 
 class ResponseHandler(object):
-    def __init__(self, _confFixture, _settings):
+    def __init__(self, _conf_fixture, _settings):
         """
         @param {object} confFixture Account Package Settings
         @param {object} settings Django User Settings
         """
-        self._conf = _confFixture
+        self._conf = _conf_fixture
         self._settings = _settings
 
     def build_401_response(self, request):
@@ -105,6 +111,36 @@ class ResponseHandler(object):
             extra_args = {self._conf.APP_KEY: getattr(self._settings, self._conf.SETTINGS_APP_KEY)}
         return extra_args
 
+    def get_oauth_redirect_url(self, callback_url, state="authenticated"):
+        """
+        获取oauth访问链接
+        """
+        params = {
+            "appid": self._conf.WEIXIN_APP_ID,
+            "redirect_uri": callback_url,
+            "response_type": "code",
+            "scope": "snsapi_userinfo",
+            "state": state,
+        }
+        params = urllib.parse.urlencode(params)
+        redirect_uri = "{}?{}#wechat_redirect".format(self._conf.WEIXIN_OAUTH_URL, params)
+        return redirect_uri
+
+    def redirect_weixin_login(self, request):
+        """
+        跳转到微信登录
+        """
+        url = urllib.parse.urlparse(request.build_absolute_uri())
+        path = self._conf.WEIXIN_LOGIN_URL
+        query = urllib.parse.urlencode({"c_url": request.get_full_path()})
+        # callback_url = urlparse.urlunsplit((url.scheme, url.netloc, path, query, url.fragment))
+        callback_url = urllib.parse.urlunsplit(
+            (url.scheme, self._conf.WEIXIN_APP_EXTERNAL_HOST, path, query, url.fragment)
+        )
+        state = request.session["WEIXIN_OAUTH_STATE"]
+        redirect_uri = self.get_oauth_redirect_url(callback_url, state)
+        return HttpResponseRedirect(redirect_uri)
+
     def build_weixin_401_response(self, request):
         """
         todo，说明 url 格式
@@ -118,16 +154,18 @@ class ResponseHandler(object):
             "scope": "snsapi_base",
             "state": request.session["WEIXIN_OAUTH_STATE"],
         }
+        logger.error(f"回调参数：{extra_args}, login_url: {_login_url}; _next: {_next}")
         _redirect = build_redirect_url(_next, _login_url, "redirect_uri", extra_args=extra_args)
+        logger.error(f"_redirect: {_redirect}")
         return HttpResponseRedirect(_redirect)
 
     def build_rio_401_response(self, request):
-        context = {"result": False, "code": RioVerifyError.ERROR_CODE, "message": _(u"您的登陆请求无法经智能网关正常检测，请与管理人员联系")}
+        context = {"result": False, "code": RioVerifyError.ERROR_CODE, "message": _("您的登陆请求无法经智能网关正常检测，请与管理人员联系")}
         return JsonResponse(context, status=401)
 
     def build_bk_jwt_401_response(self, request):
         """
         BK_JWT鉴权异常
         """
-        context = {"result": False, "code": BkJwtVerifyError.ERROR_CODE, "message": _(u"您的登陆请求无法经BK JWT检测，请与管理人员联系")}
+        context = {"result": False, "code": BkJwtVerifyError.ERROR_CODE, "message": _("您的登陆请求无法经BK JWT检测，请与管理人员联系")}
         return JsonResponse(context, status=401)

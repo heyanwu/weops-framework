@@ -109,14 +109,14 @@ class MethodError(ClientBlueException):
 class RioVerifyError(ClientBlueException):
 
     MESSAGE = _("登陆请求经智能网关检测失败")
-    ERROR_CODE = "40101"
-    STATUS_CODE = 401
+    ERROR_CODE = "40502"
+    STATUS_CODE = 405
 
 
 class BkJwtVerifyError(ClientBlueException):
 
     MESSAGE = _("登陆请求经JWT检测失败")
-    ERROR_CODE = "40102"
+    ERROR_CODE = "40503"
     STATUS_CODE = 401
 
 

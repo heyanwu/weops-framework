@@ -10,6 +10,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
+import os
 
 from django.conf import settings
 
@@ -32,9 +33,33 @@ class ConfFixture(object):
     IFRAME_HEIGHT = 490
     IFRAME_WIDTH = 460
 
-    WEIXIN_BACKEND_TYPE = "null"
-    WEIXIN_MIDDLEWARE = "null.NullMiddleware"
-    WEIXIN_BACKEND = "null.NullBackend"
+    # WEIXIN_BACKEND_TYPE = 'null'
+    # WEIXIN_MIDDLEWARE = 'null.NullMiddleware'
+    # WEIXIN_BACKEND = 'null.NullBackend'
+    #
+    # 登录模块 weixin
+    WEIXIN_BACKEND_TYPE = "weixin"
+    # 用户认证中间件 bk_ticket.middlewares.LoginRequiredMiddleware
+    WEIXIN_MIDDLEWARE = "weixin.middlewares.WeixinLoginRequiredMiddleware"
+    # 用户认证 Backend bk_ticket.backends.TicketBackend
+    WEIXIN_BACKEND = "weixin.backends.WeixinBackend"
+
+    # 用户信息链接 http://xxx.com/user/weixin/get_user_info/
+    # WEIXIN_INFO_URL = "https://api.weixin.qq.com/sns/userinfo"
+    WEIXIN_INFO_URL = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo"
+    # WEIXIN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token"
+    WEIXIN_URL = "https://qyapi.weixin.qq.com/cgi-bin/gettoken"
+
+    # 用户 OAUTH 认证链接 https://xxx.com/connect/oauth2/authorize
+    WEIXIN_OAUTH_URL = "https://open.weixin.qq.com/connect/oauth2/authorize"
+    WEIXIN_APP_EXTERNAL_HOST = os.environ.get("BKAPP_WEIXIN_APP_EXTERNAL_HOST", "paas.weops.com")
+    # WEIXIN_LOGIN_URL = settings.SITE_URL + "account/weixin/login/"
+    WEIXIN_LOGIN_URL = settings.SITE_URL + "mobile/"
+
+    # 微信公众号的app id/企业微信corp id
+    WEIXIN_APP_ID = os.environ.get("BKAPP_WEIXIN_APP_ID", "")
+    # 微信公众号的app secret/企业微信应用的secret
+    WEIXIN_APP_SECRET = os.environ.get("BKAPP_WEIXIN_APP_SECRET", "")
 
     SMS_CLIENT_MODULE = "cmsi"
     SMS_CLIENT_FUNC = "send_sms"

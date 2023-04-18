@@ -10,6 +10,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 """
+import os
 
 
 class ConfFixture(object):
@@ -70,19 +71,22 @@ class ConfFixture(object):
     ###############
 
     # 登录模块 weixin
-    WEIXIN_BACKEND_TYPE = None
+    WEIXIN_BACKEND_TYPE = "weixin"
 
     # 用户认证中间件 bk_ticket.middlewares.LoginRequiredMiddleware
-    WEIXIN_MIDDLEWARE = None
+    WEIXIN_MIDDLEWARE = "blueapps.account.middlewares.WeixinLoginRequiredMiddleware"
 
     # 用户认证 Backend bk_ticket.backends.TicketBackend
-    WEIXIN_BACKEND = None
+    WEIXIN_BACKEND = "blueapps.account.backends.WeixinBackend"
 
     # 用户信息链接 http://xxx.com/user/weixin/get_user_info/
-    WEIXIN_INFO_URL = None
+    # WEIXIN_INFO_URL = "https://api.weixin.qq.com/sns/userinfo"
+    # WEIXIN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token"
 
     # 用户 OAUTH 认证链接 https://xxx.com/connect/oauth2/authorize
-    WEIXIN_OAUTH_URL = None
+    WEIXIN_OAUTH_URL = "https://open.weixin.qq.com/connect/oauth2/authorize"
 
-    # 在微信端的应用ID 'xxxx'
-    WEIXIN_APP_ID = None
+    # 微信公众号的app id/企业微信corp id
+    WEIXIN_APP_ID = os.environ.get("BKAPP_WEIXIN_APP_ID", "")
+    # 微信公众号的app secret/企业微信应用的secret
+    WEIXIN_APP_SECRET = os.environ.get("BKAPP_WEIXIN_APP_SECRET", "")

@@ -16,8 +16,11 @@ import logging
 from django.contrib.auth.backends import ModelBackend
 
 from blueapps.account import get_user_model
+from blueapps.account.components.weixin.weixin_utils import WechatUtils
 from blueapps.account.conf import ConfFixture
 from blueapps.account.utils.http import send
+from blueapps.core.exceptions import BlueException
+from blueking.component.shortcuts import get_client_by_user
 
 logger = logging.getLogger("component")
 
@@ -28,24 +31,24 @@ class WeixinBackend(ModelBackend):
         is_wechat 参数是为了使得 WeixinBackend 与其他 Backend 参数个数不同，在框架选择
         认证 backend 时，快速定位
         """
-        logger.debug(u"进入 WEIXIN 认证 Backend")
+        logger.debug("进入 WEIXIN 认证 Backend")
         if not code:
             return None
 
-        result, user_info = self.verify_weixin_code(code)
-        logger.debug(u"微信 CODE 验证结果，result：{}，user_info：{}".format(result, user_info))
+        # result, user_info = self.verify_weixin_code(code)
+        result, user_info = self.get_weixin_user(code)
 
         if not result:
-            return None
+            return 0
 
         user_model = get_user_model()
         try:
             user, _ = user_model.objects.get_or_create(username=user_info["username"])
-            user.nickname = user_info["username"]
-            user.avatar_url = user_info["avatar"]
+            user.nickname = user_info["display_name"]
             user.save()
+            # user.avatar_url = user_info["avatar"]
         except Exception:
-            logger.exception(u"自动创建 & 更新 User Model 失败")
+            logger.exception("自动创建 & 更新 User Model 失败")
         else:
             return user
 
@@ -56,30 +59,29 @@ class WeixinBackend(ModelBackend):
         except user_model.DoesNotExist:
             return None
 
-    @staticmethod
-    def verify_weixin_code(code):
-        """
-        验证 WEIXIN 认证返回的授权码
-        @param {string} code WEIXIN 认证返回的授权码
-        @return {tuple} ret
-        @return {boolean} ret[0] 是否认证通过
-        @return {dict} ret[1] 当 result=True，该字段为用户信息，举例
-            {
-                u'username': u'',
-                u'avatar': u''
-            }
-        """
-        api_params = {
-            "code": code,
-        }
-        try:
-            response = send(ConfFixture.WEIXIN_INFO_URL, "GET", api_params)
-            ret = response.get("ret")
-            if ret == 0:
-                return True, response["data"]
-            else:
-                logger.error(u"通过微信授权码，获取用户信息失败，error={}，ret={}".format(response["msg"], ret))
-                return False, None
-        except Exception:
-            logger.exception(u"通过微信授权码，获取用户信息异常")
+    def get_weixin_user(self, code):
+        result, query_param = WechatUtils.check_login_code(code)
+        if not result:
             return False, None
+        try:
+            data = send(ConfFixture.WEIXIN_INFO_URL, "GET", query_param)
+            if data.get("errcode") and data.get("errcode") != 0:
+                logger.error("通过微信授权码，获取用户信息失败，errcode={}，errmsg={}".format(data["errcode"], data["errmsg"]))
+                return False, None
+            weixin_user_id = data["UserId"]
+            user = self.get_bk_user(weixin_user_id)
+            logger.error(user)
+            return True, user
+        except BlueException:
+            logger.exception("通过微信授权码，获取用户信息异常")
+            return False, None
+
+    def get_bk_user(self, weixin_user_id):
+        client = get_client_by_user("admin")
+        result = client.usermanage.retrieve_user(
+            {"id": weixin_user_id, "lookup_field": "wx_userid", "fields": "username,display_name"}
+        )
+        if not result["result"]:
+            logger.exception(result["message"])
+            raise BlueException()
+        return result["data"]

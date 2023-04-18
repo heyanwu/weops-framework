@@ -80,21 +80,14 @@ class User(AbstractBaseUser, PermissionsMixin):
                 "invalid",
             ),
         ],
-        error_messages={
-            "unique": _("A user with that openid already exists."),
-        },
+        error_messages={"unique": _("A user with that openid already exists.")},
     )
 
     nickname = models.CharField(
-        _("nick name"),
-        max_length=64,
-        blank=True,
-        help_text=_("Required. 64 characters or fewer."),
+        _("nick name"), max_length=64, blank=True, help_text=_("Required. 64 characters or fewer."),
     )
     is_staff = models.BooleanField(
-        _("staff status"),
-        default=False,
-        help_text=_("Designates whether the user can log into this " "admin site."),
+        _("staff status"), default=False, help_text=_("Designates whether the user can log into this " "admin site."),
     )
     is_active = models.BooleanField(
         _("active"),
@@ -103,10 +96,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             "Designates whether this user should be treated as " "active. Unselect this instead of deleting accounts."
         ),
     )
-    date_joined = models.DateTimeField(
-        _("date joined"),
-        default=timezone.now,
-    )
+    date_joined = models.DateTimeField(_("date joined"), default=timezone.now,)
 
     objects = UserManager()
 
@@ -214,11 +204,7 @@ class UserProperty(models.Model):
     Add user extra property
     """
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="properties",
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="properties",)
     key = models.CharField(
         max_length=64,
         help_text=_("Required. 64 characters or fewer. Letters, " "digits and underlined only."),

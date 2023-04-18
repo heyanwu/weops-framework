@@ -19,7 +19,6 @@ from config import default
 
 locals().update(get_settings_from_module(default))
 
-
 BK_URL = locals()["BK_URL"]
 APP_CODE = locals()["APP_CODE"]
 SECRET_KEY = locals()["SECRET_KEY"]
@@ -61,9 +60,9 @@ SECRET_KEY = APP_TOKEN = os.environ.get("APP_TOKEN", SECRET_KEY)
 BK_PAAS_INNER_HOST = os.getenv("BK_PAAS_INNER_HOST", BK_PAAS_HOST)
 
 # PAASV2对外版不需要bkoauth,DISABLED_APPS加入bkoauth
-INSTALLED_APPS = (
-    INSTALLED_APPS[0 : INSTALLED_APPS.index("bkoauth")] + INSTALLED_APPS[INSTALLED_APPS.index("bkoauth") + 1 :]
-)
+# INSTALLED_APPS = (
+#     INSTALLED_APPS[0 : INSTALLED_APPS.index("bkoauth")] + INSTALLED_APPS[INSTALLED_APPS.index("bkoauth") + 1 :]
+# )
 
 # PAASV2对外版不需要whitenoise,MIDDLEWARE中去除'whitenoise.middleware.WhiteNoiseMiddleware'
 MIDDLEWARE = (

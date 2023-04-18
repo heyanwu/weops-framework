@@ -132,13 +132,7 @@ class TokenBackend(ModelBackend):
         else:
             error_msg = response.get("message", "")
             error_data = response.get("data", "")
-            logger.error(
-                u"Failed to Get User Info: error=%(err)s, ret=%(ret)s"
-                % {
-                    u"err": error_msg,
-                    u"ret": error_data,
-                }
-            )
+            logger.error(u"Failed to Get User Info: error={err}, ret={ret}".format(err=error_msg, ret=error_data,))
             return False, {}
 
     @staticmethod

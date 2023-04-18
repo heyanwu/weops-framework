@@ -16,28 +16,13 @@ import random
 import string
 
 from blueapps.conf.default_settings import APP_CODE, BASE_DIR
-from blueapps.patch.log import get_paas_v2_logging_config_dict
 
 APP_CODE = os.environ.get("APP_ID", APP_CODE)
 
 
-def set_log_level(settings_module):
-    run_ver = settings_module.get("RUN_VER")
-    log_level = settings_module.get("LOG_LEVEL", "INFO")
-    is_local = settings_module.get("IS_LOCAL", False)
-
-    if run_ver == "open":
-        bk_log_dir = settings_module.get("BK_LOG_DIR", "/data/apps/logs/")
-        logging = get_paas_v2_logging_config_dict(is_local, bk_log_dir, log_level)
-    else:
-        logging = get_logging_config_dict(settings_module)
-
-    return logging
-
-
 def get_logging_config_dict(settings_module):
     log_class = "logging.handlers.RotatingFileHandler"
-    log_level = settings_module.get("LOG_LEVEL", "INFO")
+    log_level = settings_module.get("LOG_LEVEL", "ERROR")
 
     if settings_module.get("IS_LOCAL", False):
         log_dir = os.path.join(os.path.dirname(BASE_DIR), "logs", APP_CODE)
@@ -108,6 +93,13 @@ def get_logging_config_dict(settings_module):
                 "maxBytes": 1024 * 1024 * 10,
                 "backupCount": 5,
             },
+            "cwapi": {
+                "class": log_class,
+                "formatter": "verbose",
+                "filename": os.path.join(log_dir, "%s-cw-api.log" % log_name_prefix),
+                "maxBytes": 1024 * 1024 * 10,
+                "backupCount": 5,
+            },
         },
         "loggers": {
             "django": {"handlers": ["null"], "level": "INFO", "propagate": True},
@@ -124,5 +116,9 @@ def get_logging_config_dict(settings_module):
             "blueapps": {"handlers": ["blueapps"], "level": log_level, "propagate": True},
             # 普通app日志
             "app": {"handlers": ["root"], "level": log_level, "propagate": True},
+            # 性能日志
+            "performance": {"handlers": ["null"], "level": "INFO", "propagate": True},
+            # 其他saas开放api日志
+            "api": {"handlers": ["cwapi"], "level": "INFO", "propagate": True},
         },
     }

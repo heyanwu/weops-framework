@@ -98,7 +98,7 @@ class XssHtml(HTMLParser):
         self.start = []
         self.data = []
 
-    def getHtml(self):
+    def get_html(self):
         """
         Get the safe html code
         """
@@ -234,14 +234,12 @@ class XssHtml(HTMLParser):
         return html.replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;").replace("'", "&#039;")
 
 
-if "__main__" == __name__:
-    parser = XssHtml()
-    parser.feed(
-        """<p><img src=1 onerror=alert(/xss/)></p><div class="left">
-        <a href='javascript:prompt(1)'><br />hehe</a></div>
-        <p id="test" onmouseover="alert(1)">&gt;M<svg>
-        <a href="https://www.baidu.com" target="self">MM</a></p>
-        <embed src='javascript:alert(/hehe/)' allowscriptaccess=always />"""
-    )
-    parser.close()
-    print(parser.getHtml())
+# if "__main__" == __name__:
+#     parser = XssHtml()
+#     parser.feed("""<p><img src=1 onerror=alert(/xss/)></p><div class="left">
+#         <a href='javascript:prompt(1)'><br />hehe</a></div>
+#         <p id="test" onmouseover="alert(1)">&gt;M<svg>
+#         <a href="https://www.baidu.com" target="self">MM</a></p>
+#         <embed src='javascript:alert(/hehe/)' allowscriptaccess=always />""")
+#     parser.close()
+#     print(parser.getHtml())

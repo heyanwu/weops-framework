@@ -23,7 +23,7 @@ from blueapps.account.handlers.response import ResponseHandler
 
 try:
     from django.utils.deprecation import MiddlewareMixin
-except Exception:
+except ImportError:
     MiddlewareMixin = object
 
 logger = logging.getLogger("component")
@@ -62,15 +62,15 @@ class LoginRequiredMiddleware(MiddlewareMixin):
                     return None
 
             user = auth.authenticate(request=request, bk_token=bk_token)
-
-            if user is not None and user.username != request.user.username:
-                # 切换用户时,由于session_key是上一个用户的,login时会被清除
+            if user is not None:
                 auth.login(request, user)
-
-            if user is not None and request.user.is_authenticated:
+                get_addr_by_request(request)
+                # ip_addr = get_addr_by_request(request)
+                # user.set_property(constants.LAST_LOGIN_ADDR_FIELD, ip_addr)
                 session_key = request.session.session_key
-                # 如果获取不到session_key,则手动刷新获取当前用户的session_key,避免存储None进cache
+
                 if not session_key:
+                    logger.info("删除了session_session_key")
                     request.session.cycle_key()
                 session_key = request.session.session_key
                 cache.set(session_key, {"bk_token": bk_token}, settings.LOGIN_CACHE_EXPIRED)
@@ -82,3 +82,13 @@ class LoginRequiredMiddleware(MiddlewareMixin):
 
     def process_response(self, request, response):
         return response
+
+
+def get_addr_by_request(request):
+    """根据请求获取IP对应的所在地址"""
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(",")[0]  # 所以这里是真实的ip
+    else:
+        ip = request.META.get("REMOTE_ADDR")  # 这里获得代理ip
+    setattr(request, "current_ip", ip)

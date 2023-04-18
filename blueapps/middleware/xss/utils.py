@@ -101,7 +101,7 @@ def check_script(str_escape):
         parser = XssHtml()
         parser.feed(str_escape)
         parser.close()
-        return parser.getHtml()
+        return parser.get_html()
     except Exception:
         return str_escape
 

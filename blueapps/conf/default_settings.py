@@ -29,7 +29,7 @@ ROOT_URLCONF = "urls"
 SITE_ID = 1
 
 INSTALLED_APPS = (
-    "bkoauth",
+    # "bkoauth",
     # 框架自定义命令
     "blueapps.contrib.bk_commands",
     "django.contrib.admin",
@@ -86,10 +86,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # "DIRS": (os.path.join(BASE_DIR, "templates"), os.path.join(BASE_DIR, "static/weixin/")),
-        "DIRS": (
-            os.path.join(BASE_DIR, "static/dist"),
-            os.path.join(BASE_DIR, "templates"),
-        ),
+        "DIRS": (os.path.join(BASE_DIR, "static/dist"), os.path.join(BASE_DIR, "templates"),),
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

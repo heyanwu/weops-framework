@@ -2,6 +2,7 @@
 import json
 import logging
 
+from utils.performance import fn_performance
 
 from .conf import COMPONENT_SYSTEM_HOST
 from .exceptions import ComponentAPIException
@@ -49,6 +50,7 @@ class ComponentAPI(object):
                     pass
             return {"result": False, "message": e.error_message, "data": None}
 
+    @fn_performance(show_param=False)
     def _call(self, *args, **kwargs):
         params, data = {}, {}
         if args and isinstance(args[0], dict):

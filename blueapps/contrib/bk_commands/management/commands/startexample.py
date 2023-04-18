@@ -133,8 +133,10 @@ class Command(TemplateCommand):
             if file_name != save_file_name:
                 os.remove(path.join(test_component_base, file_name))
                 os.remove(path.join(test_app_tags_base, file_name))
-        shutil.move(path.join(test_component_base, save_file_name), path.join(test_component_base, "views.py"))
-        shutil.move(path.join(test_app_tags_base, save_file_name), path.join(test_app_tags_base, "views.py"))
+        shutil.move(
+            path.join(test_component_base, save_file_name), path.join(test_component_base, "dashboard_views.py")
+        )
+        shutil.move(path.join(test_app_tags_base, save_file_name), path.join(test_app_tags_base, "dashboard_views.py"))
 
         # 将静态文件夹移到项目根目录的static文件夹中
         try:
@@ -171,11 +173,6 @@ def get_default_content(old_file_object, json_file):
             content = propertys.get("content")
             # mode 为 add 追加内容
             if propertys.get("mode") == "add":
-                if result_content.find("()", start_index):
-                    end_index = result_content.find("()", start_index) + 1
-                    temp_content = result_content[start_index:end_index].strip()
-                    temp_content += "\n"
-                    result_content = "".join([result_content[:start_index], temp_content, result_content[end_index:]])
                 end_index = result_content.find(")", start_index) - 1
                 temp_content = result_content[start_index:end_index].strip()
                 # 检查最后一个是不是,结尾
