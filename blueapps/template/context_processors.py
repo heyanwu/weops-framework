@@ -17,7 +17,6 @@ import datetime
 import json
 import logging
 
-from common.bk_api_utils.main import SiteConfig
 from django.conf import settings
 
 logger = logging.getLogger("blueapps")
@@ -55,7 +54,6 @@ def blue_settings(request):
             "BK_URL": settings.BK_URL,
             # 蓝鲸开发者页面
             "BK_DEV_URL": settings.BK_DEV_URL,
-            "BK_PAAS_HOST": settings.BK_PAAS_HOST,
             # 用户名
             "USERNAME": username,
             # 用户昵称
@@ -76,28 +74,6 @@ def blue_settings(request):
             "BK_STATIC_URL": getattr(settings, "BK_STATIC_URL", ""),
             # 是否使用blueking_language切换国际化语言
             "IS_DISPLAY_LANGUAGE_CHANGE": settings.IS_DISPLAY_LANGUAGE_CHANGE,
-            # cmdb 访问地址
-            "CMDB_HREF": settings.CMDB_URL,
-            # JOB 访问地址
-            "JOB_HREF": settings.JOB_URL,
-            # weops app code
-            "WEOPS_APP_CODE": SiteConfig.WEOPS,
-            # 统一告警中心 app code
-            "UAC_APP_CODE": SiteConfig.UAC,
-            # 统一监控中心 app code
-            "MONITOR_APP_CODE": SiteConfig.MONITOR,
-            # 流程管理 app code
-            "FLOW_APP_CODE": SiteConfig.FLOW,
-            # 一键补丁安装 app code
-            "PATCH_APP_CODE": SiteConfig.PATCH,
-            # 数字运营中心 app code
-            "OPS_APP_CODE": SiteConfig.OPS,
-            # weops微信端事件匹配名
-            "WX_ENVENT_NAME": settings.WX_ENVENT_NAME,
-            # 控制台绑定微信的类型(wx微信,qywx企业微信)
-            "CONSOLE_BIND_WX_TYPE": settings.CONSOLE_BIND_WX_TYPE,
-            # 当前环境变量（o/t）
-            "CURRENT_ENV": settings.CURRENT_ENV,
         }
     except Exception:
         logger.exception(u"自定义模板上下文异常")

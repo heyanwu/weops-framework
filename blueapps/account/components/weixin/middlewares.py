@@ -23,7 +23,6 @@ from django.utils.deprecation import MiddlewareMixin
 from blueapps.account.components.weixin.forms import WeixinAuthenticationForm
 from blueapps.account.conf import ConfFixture
 from blueapps.account.handlers.response import ResponseHandler
-from utils.token import generate_bk_token, set_bk_token_to_open_pass_db
 
 logger = logging.getLogger("component")
 
@@ -66,15 +65,6 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
         return None
 
     def process_response(self, request, response):
-        if not request.is_wechat():
-            return response
-        if not request.user.username:
-            return response
-        if request.COOKIES.get("bk_token"):
-            return response
-        bk_token, expire_time = generate_bk_token(request.user.username)
-        response.set_cookie("bk_token", bk_token, max_age=60 * 60 * 12, domain=settings.BK_DOMAIN, httponly=True)
-        set_bk_token_to_open_pass_db(bk_token, expire_time)
         return response
 
     @staticmethod
