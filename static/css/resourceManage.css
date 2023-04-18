@@ -1,0 +1,23 @@
+.clearfix.views-layout {
+    height: 100% !important;
+}
+
+.main-views {
+    height: 100%;
+}
+
+.topology-tree {
+    height: 440px !important;
+}
+
+.bk-sideslider-wrapper.right {
+    overflow: hidden !important;
+}
+
+.bk-sideslider-header {
+    margin-top: 61px !important;
+}
+
+.bk-sideslider .bk-sideslider-content {
+    height: calc(100% - 190px) !important;
+}

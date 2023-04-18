@@ -1,0 +1,167 @@
+.bk-navigation-header {
+    display: none !important;
+}
+
+.navigation-container .container-content {
+    max-height: 100vh !important;
+}
+
+/*.table-wrap {*/
+/*    padding: 0 !important;*/
+/*}*/
+
+.bk-app-content .my-ticket-page .nav {
+    display: none !important;
+}
+
+.all-ticket-page .nav-title {
+    display: none !important;
+}
+
+
+.all-ticket-page .bk-tab-header {
+    display: none !important;
+}
+
+.table-wrap {
+    height: 100% !important;
+    padding: 0 !important;
+}
+
+/*.bk-table-body-wrapper {*/
+/*    height: 340px;*/
+/*    overflow-y: auto;*/
+/*}*/
+.bk-app-content {
+    overflow-y: scroll !important;
+}
+
+.container-footer {
+    display: none !important;
+}
+
+.bk-dialog-body .select-service {
+    height: 300px !important;
+}
+
+/*.bk-dialog-content {*/
+/*    height: 480px !important;*/
+/*}*/
+
+/*.bk-tab-content .service-empty {*/
+/*    height: 300px !important;*/
+/*}*/
+
+/*.bk-dialog-footer {*/
+/*    margin-top: -100px !important;*/
+/*}*/
+
+.bk-dialog-wrapper .bk-dialog-body {
+    height: 400px !important;
+}
+
+.bk-dialog-wrapper .bk-dialog {
+    top: 10px !important;
+}
+
+.ticket-container-right {
+    display: none !important;
+}
+
+.show-right-icon {
+    display: none !important;
+}
+
+.basic-show-bar {
+    /*去除隐藏工单详情的左侧展开按钮*/
+    /*display: none !important;*/
+}
+
+.bk-tab-label-wrapper ul li:nth-child(1) {
+    display: none !important;
+}
+
+.bk-tab-label-wrapper ul li:nth-child(0) {
+    display: none !important;
+}
+
+.all-ticket-page .nav .nav-tab {
+    height: 100% !important;
+}
+
+.bk-tab-section {
+    height: 100% !important;
+}
+
+.service-empty {
+    display: none !important;
+}
+
+.table-wrapper {
+    background: #fff !important;
+}
+
+.service-content {
+    max-height: 240px !important;
+}
+
+.ticket-tab-header {
+    display: none !important;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(255, 0, 0, .4)
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background-color: rgba(255, 255, 255, .07)
+}
+
+/*::-webkit-scrollbar-thumb {*/
+/*    -webkit-border-radius: 10px;*/
+/*    border-radius: 10px;*/
+/*    width: 6px;*/
+/*    background: #C4C6CC;*/
+/*    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .5)*/
+/*}*/
+
+/*::-webkit-scrollbar-thumb:window-inactive {*/
+/*    background-color: rgba(255, 255, 255, .07)*/
+/*}*/
+
+.bk-dialog .bk-tab-label-wrapper ul li:nth-child(0) {
+    display: none !important;
+}
+
+.bk-dialog .bk-tab-label-wrapper ul li:nth-child(1) {
+    display: none !important;
+}
+
+.bk-dialog .bk-tab-label-wrapper ul li:nth-child(2) {
+    display: none !important;
+}
+
+.bk-dialog .bk-tab-label-wrapper ul li:nth-child(3) {
+    display: none !important;
+}
+
+.bk-dialog .bk-tab-label-wrapper ul li:nth-child(5) {
+    display: none !important;
+}
+
+.bk-dialog .bk-tab-label-wrapper ul li:nth-child(6) {
+    display: none !important;
+}
+.ticket-detail-panel .ticket-container {
+    padding: 10px 0 0 0 !important;
+}
+
+.ticket-detail-panel .ticket-container .ticket-container-center .bk-tab-content {
+    min-height: min-content !important;
+}
+
+.ticket-detail-panel .ticket-container .ticket-container-center .bk-tab-content div:first-child {
+    min-height: min-content !important;
+}

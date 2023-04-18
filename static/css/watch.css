@@ -1,0 +1,19 @@
+.bk-navigation-header {
+    display: none;
+}
+
+.bk-navigation-wrapper .navigation-container .container-content {
+    max-height: calc(100vh - 12px) !important;
+}
+
+.bk-navigation-wrapper .navigation-nav {
+    display: none;
+}
+
+.bk-app-content .bk-itsm-service {
+    padding-top: 0 !important;
+}
+
+.bk-app-content .bk-itsm-service .is-title {
+    display: none;
+}

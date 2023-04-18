@@ -1,0 +1,56 @@
+.bk-navigation-header {
+    display: none;
+}
+
+.bk-navigation-wrapper {
+    border-top: none !important;
+}
+
+.bk-navigation-wrapper .navigation-nav {
+    display: none;
+}
+
+.bk-navigation-wrapper .navigation-container .container-content {
+    max-height: 100% !important;
+}
+
+.bk-app-content .ticket-header {
+    display: none;
+}
+
+.bk-app-content .ticket-header .basic-info {
+    display: none;
+}
+
+.bk-app-content .ticket-container {
+    padding: 0 !important;
+    height: 100% !important;
+}
+
+.bk-app-content .ticket-container .create-form-wrapper {
+    width: 100% !important;
+}
+
+.bk-app-content .ticket-container .change-service {
+    display: none !important;
+}
+
+.bk-app-content .operator button:nth-child(2) {
+    display: none;
+}
+
+.bk-app-content .operator button:nth-child(3) {
+    display: none;
+}
+
+.bk-app-content .create-form>div:nth-child(1) {
+    display: none !important;
+}
+
+.bk-app-content .create-form>div:nth-child(2) {
+    display: none !important;
+}
+
+.bk-app-content .ticket-container .ticket-operations {
+    display: none;
+}

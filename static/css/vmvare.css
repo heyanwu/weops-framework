@@ -1,0 +1,90 @@
+body {
+    min-width: 100px !important;
+}
+
+.bk-navigation-header {
+    display: none !important;
+}
+
+.navigation-nav {
+    display: none !important;
+}
+
+.nodeman-navigation-content {
+    display: none !important;
+}
+
+.footer {
+    display: none !important;
+}
+
+.container-header {
+    display: none !important;
+}
+
+.navigation-container {
+    max-width: 100vw !important;
+}
+
+/*.bk-table-row td:last-child .cell button:last-child {*/
+/*    display: none !important;*/
+/*}*/
+
+.bk-tab-label-wrapper {
+    display: none !important;
+}
+
+.bk-tab-header {
+    display: none !important;
+}
+
+.navigation-container .container-content {
+    max-height: 100vh !important;
+}
+
+.bk-table-body-wrapper {
+    max-height: calc(100vh - 150px) !important;
+    overflow-y: auto;
+}
+
+.bk-tab-section {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+
+.bk-alert.bk-alert-info {
+    display: none !important;
+}
+
+#taskAndReport {
+    padding: 0 8px !important;
+}
+
+#monitorStrategy {
+    padding: 0 8px !important;
+}
+
+.container-content {
+    overflow: hidden !important;
+}
+
+.bk-navigation-wrapper .navigation-container .container-content {
+    padding: 0 !important;
+}
+
+.bk-tab-section {
+    padding: 0 !important;
+}
+
+.monitor-navigation .bk-navigation .bk-navigation-wrapper .navigation-container .container-content .monitor-navigation-content > div {
+    padding: 0 !important;
+}
+
+.agent {
+    padding-bottom: 0 !important;
+}
+
+.bk-form-radio-button {
+    display: none !important;
+}

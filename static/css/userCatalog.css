@@ -1,0 +1,19 @@
+body {
+    min-width: 100px !important;
+}
+.main-content {
+    width: 100% !important;
+    padding: 20px !important; 
+    height: calc(100% - 130px);
+    margin: 0 !important;
+}
+
+.header-container{
+    display: none !important;
+}
+.footer-content{
+    display: none !important;
+}
+.index-page>.catalog-table {
+    max-height: none !important;
+}

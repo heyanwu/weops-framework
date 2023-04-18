@@ -1,0 +1,22 @@
+.head {
+    display: none;
+}
+.page_index {
+    padding: 0;
+    min-height: 100% !important;
+    height: 100% !important;
+}
+.page_index .container_box .col_side {
+    display: none;
+}
+.foot {
+    display: none;
+}
+
+.page_index .container_box .account_setting_area ul li:nth-child(5) {
+    display: none;
+}
+
+.page_index .container_box .account_setting_area ul li:nth-child(6) {
+    display: none;
+}

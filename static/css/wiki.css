@@ -1,0 +1,137 @@
+.bk-navigation-header {
+    /*display: none !important;*/
+    visibility: hidden !important;
+}
+
+.navigation-nav {
+    display: none !important;
+}
+
+.nodeman-navigation-content {
+    display: none !important;
+}
+
+/*.container-content {*/
+/*    padding: 0 10px 0 0 !important;*/
+/*}*/
+
+.agent-operate {
+    display: none;
+}
+
+.container-header {
+    display: none !important;
+}
+
+#PolicyManage > div button {
+    display: none !important;
+}
+
+#PolicyManage > div {
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.container-content {
+    max-height: calc(100vh) !important;
+}
+
+
+/*.bk-article-classification-contain {*/
+/*    display: none !important;*/
+/*}*/
+/*.bk-article-classification-contain {
+    display: none !important;
+}
+.bk-open-close-contain .bk-open-close {
+    display: none !important;
+}*/
+
+
+/*.bk-tab-label-list .bk-tab-label-item:nth-of-type(2) {*/
+/*    display: none !important;*/
+/*}*/
+
+.navigation-container {
+    max-width: calc(100vw) !important;
+}
+
+.bk-form-control {
+    padding: 5px !important;
+}
+
+.top-wrap .bk-form-control {
+    display: flex;
+    margin-top: 4px !important;
+}
+
+
+.bk-app-content .my-ticket-page .nav {
+    display: none !important;
+}
+
+.all-ticket-page .nav-title {
+    display: none !important;
+}
+
+
+.all-ticket-page .bk-tab-header {
+    display: none !important;
+}
+
+.header-right .nav-header button {
+    display: block !important;
+    position: fixed !important;
+    height: 32px !important;
+    width: 86px !important;
+    top: 168px !important;
+    z-index: 1000 !important;
+    /*display: inline-block !important;*/
+    /*position: relative !important;*/
+    /*top: -300px !important;*/
+    /*right: 90px !important*/
+}
+
+.bk-wiki-header {
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.bk-navigation-header {
+    display: none !important;
+}
+
+.bk-wiki-page {
+    background-color: transparent !important;
+    padding: 0 !important;
+}
+
+.header-layout {
+    display: none !important;
+}
+
+.main-navigation {
+    display: none !important;
+}
+
+.main-breadcrumbs {
+    display: none !important;
+}
+
+#appView .app-view {
+    padding-right: 10px !important;
+}
+
+.monitor-navigation .bk-navigation .bk-navigation-wrapper .navigation-container .container-content .monitor-navigation-content > div {
+    padding: 5px !important;
+}
+
+.bk-form-control .bk-limit-box {
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+}
+
+.bk-jw-itsm-wiki-knowledge-ysh.editor.extend .menubar.bk-fixed {
+    top: 0 !important;
+}

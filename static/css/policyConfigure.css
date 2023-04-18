@@ -1,0 +1,22 @@
+.bk-navigation-wrapper .navigation-nav {
+    display: none;
+}
+.bk-navigation-wrapper .navigation-container .container-header {
+    display: none !important;
+}
+body {
+    min-width: 100%;
+}
+.bk-navigation-wrapper .navigation-container .container-content {
+    background: #fff !important;
+}
+#PolicyManage {
+    padding: 0 !important;
+}
+#strategyAdd {
+    padding: 0 !important;
+}
+.bk-form-item.operator-form-item {
+    display: flex;
+    justify-content: flex-end;
+}

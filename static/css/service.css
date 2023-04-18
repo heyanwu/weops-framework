@@ -1,0 +1,23 @@
+.bk-navigation-header {
+    display: none;
+}
+
+.bk-navigation-wrapper .navigation-nav {
+    display: none;
+}
+
+.bk-app-content .is-title {
+    display: none;
+}
+
+.bk-app-content .bk-itsm-service {
+    padding-top: 0 !important;
+}
+
+.bk-navigation-wrapper .navigation-container .container-content {
+    max-height: 100% !important;
+}
+
+.bk-app-content .bk-itsm-service .itsm-page-content {
+    padding: 0 !important;
+}
