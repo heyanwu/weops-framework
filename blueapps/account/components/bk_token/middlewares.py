@@ -68,9 +68,7 @@ class LoginRequiredMiddleware(MiddlewareMixin):
                 # ip_addr = get_addr_by_request(request)
                 # user.set_property(constants.LAST_LOGIN_ADDR_FIELD, ip_addr)
                 session_key = request.session.session_key
-
                 if not session_key:
-                    logger.info("删除了session_session_key")
                     request.session.cycle_key()
                 session_key = request.session.session_key
                 cache.set(session_key, {"bk_token": bk_token}, settings.LOGIN_CACHE_EXPIRED)
