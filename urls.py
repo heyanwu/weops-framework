@@ -26,12 +26,16 @@ urlpatterns = [
     # 这里的 mako_application 可以改成你想要的名字
     url(r"^i18n/", include("django.conf.urls.i18n")),
 ]
-apps = {
-    "apps": os.listdir("apps"),
-    "apps_other": os.listdir("apps_other")
-}
+apps = {"apps": os.listdir("apps"), "apps_other": os.listdir("apps_other")}
 for key, app_list in apps.items():
-    dir_list = [i for i in app_list if os.path.isdir(f"{key}/{i}") and not i.startswith("__")  and i not in ["system_mgmt"]]
+    dir_list = [
+        i
+        for i in app_list
+        if os.path.isdir(f"{key}/{i}")
+        and "urls.py" in os.listdir(f"{key}/{i}")
+        and not i.startswith("__")
+        and i not in ["system_mgmt"]
+    ]  # noqa
     for i in dir_list:
         urlpatterns.append(url(r"^{}/".format(i), include(f"{key}.{i}.urls")))  # noqa
 

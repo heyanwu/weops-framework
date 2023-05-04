@@ -42,7 +42,6 @@ INSTALLED_APPS += (  # noqa
     "base_index",
 )
 
-
 # 这里是默认的中间件，大部分情况下，不需要改动
 # 如果你已经了解每个默认 MIDDLEWARE 的作用，确实需要去掉某些 MIDDLEWARE，或者改动先后顺序，请去掉下面的注释，然后修改
 # MIDDLEWARE = (
@@ -106,12 +105,13 @@ else:
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT, PROJECT_MODULE_NAME = os.path.split(PROJECT_PATH)
 # 自定义上下文
-CUSTOM_CONTEXT_PROCESSORS = [
-    "config.template.context_processors.custom_settings",
-]
+if os.path.exists("config/template/context_processors.py"):
+    CUSTOM_CONTEXT_PROCESSORS = [
+        "config.template.context_processors.custom_settings",
+    ]
 
-for tmpl in TEMPLATES:  # noqa
-    tmpl["OPTIONS"]["context_processors"] += CUSTOM_CONTEXT_PROCESSORS
+    for tmpl in TEMPLATES:  # noqa
+        tmpl["OPTIONS"]["context_processors"] += CUSTOM_CONTEXT_PROCESSORS
 
 # CSRF Config
 CSRF_COOKIE_NAME = "%s_csrftoken" % APP_CODE  # noqa
@@ -256,11 +256,10 @@ REST_FRAMEWORK = {
     # "EXCEPTION_HANDLER": "utils.exception_capture.common_exception_handler",
 }
 
-
 HAYSTACK_CONNECTIONS = {
     "default": {
         # 使用whoosh引擎
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
         # 索引文件路径
         "PATH": os.path.join(BASE_DIR, "USERRES", "whoosh_index"),  # noqa
     }
