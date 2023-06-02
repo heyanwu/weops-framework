@@ -1,16 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Tencent is pleased to support the open source community by making 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community
-Edition) available.
-Copyright (C) 2017-2020 THL A29 Limited, a Tencent company. All rights reserved.
-Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-http://opensource.org/licenses/MIT
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
-an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
-specific language governing permissions and limitations under the License.
-"""
-
 import logging
 import random
 import time
@@ -23,6 +10,7 @@ from django.utils.deprecation import MiddlewareMixin
 from blueapps.account.components.weixin.forms import WeixinAuthenticationForm
 from blueapps.account.conf import ConfFixture
 from blueapps.account.handlers.response import ResponseHandler
+from utils.token import generate_bk_token, set_bk_token_to_open_pass_db
 
 logger = logging.getLogger("component")
 
@@ -65,6 +53,15 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
         return None
 
     def process_response(self, request, response):
+        if not request.is_wechat():
+            return response
+        if not request.user.username:
+            return response
+        if request.COOKIES.get("bk_token"):
+            return response
+        bk_token, expire_time = generate_bk_token(request.user.username)
+        set_bk_token_to_open_pass_db(bk_token, expire_time)
+        response.set_cookie("bk_token", bk_token, max_age=60 * 60 * 12, domain=settings.BK_DOMAIN, httponly=True)
         return response
 
     @staticmethod
