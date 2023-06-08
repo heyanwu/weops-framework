@@ -25,6 +25,7 @@ urlpatterns = [
     # 如果你习惯使用 mako 模板，请在 mako_application 里开发你的应用，
     # 这里的 mako_application 可以改成你想要的名字
     url(r"^i18n/", include("django.conf.urls.i18n")),
+    url(r"^version_log/", include("version_log.urls", namespace="version_log")),
 ]
 apps = {"apps": os.listdir("apps"), "apps_other": os.listdir("apps_other")}
 for key, app_list in apps.items():

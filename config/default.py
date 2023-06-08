@@ -37,6 +37,7 @@ from blueapps.conf.log import get_logging_config_dict
 
 
 INSTALLED_APPS += (  # noqa
+    "version_log",
     "rest_framework",
     "rest_framework_swagger",
     "base_index",

@@ -72,3 +72,4 @@ wheel==0.37.1
 
 PyYAML==6.0
 wrapt==1.14.1
+django-versionlog==1.6.0
