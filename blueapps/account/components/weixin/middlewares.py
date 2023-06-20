@@ -30,11 +30,11 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
         user = 0
         if not (login_exempt or request.user.is_authenticated):
             form = WeixinAuthenticationForm(request.GET)
-            if form.is_valid():
-                code = form.cleaned_data["code"]
-                state = form.cleaned_data["state"]
+            if request.COOKIES.get("bk_token") or form.is_valid():
+                code = form.cleaned_data.get("code")
+                state = form.cleaned_data.get("state")
 
-                if self.valid_state(request, state):
+                if request.COOKIES.get("bk_token") or self.valid_state(request, state):
                     user = auth.authenticate(request=request, code=code, is_wechat=True)
             else:
                 logger.error("微信请求链接，未检测到微信验证码，url：{}，params：{}".format(request.path_info, request.GET))
