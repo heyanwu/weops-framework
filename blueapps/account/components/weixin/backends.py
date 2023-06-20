@@ -70,7 +70,6 @@ class WeixinBackend(ModelBackend):
                 return False, None
             weixin_user_id = data["UserId"]
             user = self.get_bk_user(weixin_user_id)
-            logger.error(user)
             return True, user
         except BlueException:
             logger.exception("通过微信授权码，获取用户信息异常")

@@ -37,31 +37,35 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
             return None
 
         login_exempt = getattr(view, "login_exempt", False)
+        user = 0
         if not (login_exempt or request.user.is_authenticated):
             bk_token = request.COOKIES.get("bk_token", "")
             if bk_token:
-                is_authenticate = self.authenticate_user(bk_token, request)
-                if is_authenticate:
-                    return None
-
-            form = WeixinAuthenticationForm(request.GET)
-
-            if form.is_valid():
-                code = form.cleaned_data["code"]
-                state = form.cleaned_data["state"]
-
-                if self.valid_state(request, state):
-                    user = auth.authenticate(request=request, code=code, is_wechat=True)
-                    if user == 0:
-                        return JsonResponse({"result": False, "message": "用户验证失败!"})
-                    if user and user.username != request.user.username:
-                        auth.login(request, user)
-                    if request.user.is_authenticated:
-                        # 登录成功，确认登陆正常后退出
-                        return None
+                user = self.authenticate_user(bk_token, request)
             else:
-                logger.error("微信请求链接，未检测到微信验证码，url：{}，params：{}".format(request.path_info, request.GET))
+                form = WeixinAuthenticationForm(request.GET)
+                if form.is_valid():
+                    code = form.cleaned_data["code"]
+                    state = form.cleaned_data["state"]
 
+                    if self.valid_state(request, state):
+                        user = auth.authenticate(request=request, code=code, is_wechat=True)
+                        if user == 0:
+                            return JsonResponse({"result": False, "message": "用户验证失败!"})
+                        if user and user.username != request.user.username:
+                            auth.login(request, user)
+                        if request.user.is_authenticated:
+                            # 登录成功，确认登陆正常后退出
+                            return None
+                else:
+                    logger.error("微信请求链接，未检测到微信验证码，url：{}，params：{}".format(request.path_info, request.GET))
+            if user == 0:
+                return JsonResponse({"result": False, "message": "用户验证失败!"})
+            if user and user.username != request.user.username:
+                auth.login(request, user)
+            if request.user.is_authenticated:
+                # 登录成功，确认登陆正常后退出
+                return None
             self.set_state(request)
             handler = ResponseHandler(ConfFixture, settings)
             # return handler.build_weixin_401_response(request)
@@ -203,15 +207,7 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
             cache_session = cache.get(session_key)
             is_match = cache_session and bk_token == cache_session.get("bk_token")
             if is_match and request.user.is_authenticated:
-                return True
+                return 0
         user = self.get_user(bk_token)
-        if user:
-            auth.login(request, user)
-            session_key = request.session.session_key
-            if not session_key:
-                logger.info("删除了session_session_key")
-                request.session.cycle_key()
-            session_key = request.session.session_key
-            cache.set(session_key, {"bk_token": bk_token}, settings.LOGIN_CACHE_EXPIRED)
-            return True
-        return False
+
+        return user
