@@ -33,3 +33,33 @@ class CollectionsGSE(object):
             path='/api/c/compapi{bk_api_ver}/gse/proc_run_command/',
             description=u'进程管理：执行命令'
         )
+        self.get_proc_operate_result = ComponentAPI(
+            client=self.client, method='POST',
+            path='/api/c/compapi{bk_api_ver}/gse/get_proc_operate_result/',
+            description=u'查询进程操作结果'
+        )
+        self.get_proc_status = ComponentAPI(
+            client=self.client, method='POST',
+            path='/api/c/compapi{bk_api_ver}/gse/get_proc_status/',
+            description=u'查询进程状态信息'
+        )
+        self.operate_proc = ComponentAPI(
+            client=self.client, method='POST',
+            path='/api/c/compapi{bk_api_ver}/gse/operate_proc/',
+            description=u'进程操作'
+        )
+        self.register_proc_info = ComponentAPI(
+            client=self.client, method='POST',
+            path='/api/c/compapi{bk_api_ver}/gse/register_proc_info/',
+            description=u'注册进程信息'
+        )
+        self.unregister_proc_info = ComponentAPI(
+            client=self.client, method='POST',
+            path='/api/c/compapi{bk_api_ver}/gse/unregister_proc_info/',
+            description=u'注销进程信息'
+        )
+        self.update_proc_info = ComponentAPI(
+            client=self.client, method='POST',
+            path='/api/c/compapi{bk_api_ver}/gse/update_proc_info/',
+            description=u'更新进程信息'
+        )
