@@ -29,8 +29,8 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
         login_exempt = getattr(view, "login_exempt", False)
         user = 0
         if not (login_exempt or request.user.is_authenticated):
-            form = WeixinAuthenticationForm(request.GET)
-            if request.COOKIES.get("bk_token") or form.is_valid():
+            form = WeixinAuthenticationForm(request.GET.dict())
+            if form.is_valid() or request.COOKIES.get("bk_token"):
                 code = form.cleaned_data.get("code")
                 state = form.cleaned_data.get("state")
 
