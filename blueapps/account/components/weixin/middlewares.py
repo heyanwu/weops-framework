@@ -27,24 +27,23 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
             return None
 
         login_exempt = getattr(view, "login_exempt", False)
-        user = 0
         if not (login_exempt or request.user.is_authenticated):
-            form = WeixinAuthenticationForm(request.GET.dict())
+            form = WeixinAuthenticationForm(request.GET)
             if form.is_valid() or request.COOKIES.get("bk_token"):
                 code = form.cleaned_data.get("code")
                 state = form.cleaned_data.get("state")
 
                 if request.COOKIES.get("bk_token") or self.valid_state(request, state):
                     user = auth.authenticate(request=request, code=code, is_wechat=True)
+                    if user == 0:
+                        return JsonResponse({"result": False, "message": "用户验证失败!"})
+                    if user and user.username != request.user.username:
+                        auth.login(request, user)
+                    if request.user.is_authenticated:
+                        # 登录成功，确认登陆正常后退出
+                        return None
             else:
                 logger.error("微信请求链接，未检测到微信验证码，url：{}，params：{}".format(request.path_info, request.GET))
-            if user == 0:
-                return JsonResponse({"result": False, "message": "用户验证失败!"})
-            if user and user.username != request.user.username:
-                auth.login(request, user)
-            if request.user.is_authenticated:
-                # 登录成功，确认登陆正常后退出
-                return None
             self.set_state(request)
             handler = ResponseHandler(ConfFixture, settings)
             # return handler.build_weixin_401_response(request)
