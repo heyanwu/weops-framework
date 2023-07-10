@@ -689,3 +689,9 @@ class CollectionsCC(object):
             path="/api/c/compapi{bk_api_ver}/cc/find_module_with_relation/",
             description=u"查询业务下的模块",
         )
+        self.find_instassociation_with_inst = ComponentAPI(
+            client=self.client,
+            method="POST",
+            path="/api/c/compapi{bk_api_ver}/cc/find_instassociation_with_inst/",
+            description=u"查询模型实例关联关系与实例详情",
+        )
