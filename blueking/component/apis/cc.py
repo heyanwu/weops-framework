@@ -431,6 +431,9 @@ class CollectionsCC(object):
         self.search_inst = ComponentAPI(
             client=self.client, method="POST", path="/api/c/compapi{bk_api_ver}/cc/search_inst/", description=u"查询实例"
         )
+        self.search_inst_topo = ComponentAPI(
+            client=self.client, method="POST", path="/api/c/compapi{bk_api_ver}/cc/search_inst_topo/", description=u"查询实例"
+        )
         self.search_inst_association_topo = ComponentAPI(
             client=self.client,
             method="POST",
