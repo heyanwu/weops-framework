@@ -126,3 +126,8 @@ DATABASES = {
     },
 }
 ```
+
+5、mysql本地登录验证流程 登录方式分为基于蓝鲸平台认证登录和基于本地mysql数据库用户验证登录
+
+基于蓝鲸平台认证登录时，在local_settings.py中修改开发环境为DEBUG=False
+基于本地mysql认证登录时，在local_settings.py中修改开发环境为DEBUG=True
