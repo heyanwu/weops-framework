@@ -1,1 +1,0 @@
-app_name = "apps_other.app_bot"
