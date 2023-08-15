@@ -35,7 +35,7 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
 
                 if request.COOKIES.get("bk_token") or self.valid_state(request, state):
                     user = auth.authenticate(request=request, code=code, is_wechat=True)
-                    if user == 0:
+                    if user is None:
                         return JsonResponse({"result": False, "message": "用户验证失败!"})
                     if user and user.username != request.user.username:
                         auth.login(request, user)
