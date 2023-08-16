@@ -6,13 +6,13 @@ from apps_other.app_bot.views import bot_list, bot_create, bot_detail, bot_updat
     intent_list, intent_delete, intent_update, utterance_create, utterance_list, utterance_delete, utterance_update, \
     story_create, story_list, story_delete, story_update
 
-app_name = 'app_test'
+app_name = 'app_bot'
 urlpatterns = [
-    path('app_bot/', bot_list,name='bot_list'),
-    path('app_bot/create/',bot_create,name = 'bot_create'),
-    path('app_bot/<int:pk>/',bot_detail,name = 'bot_detail'),
-    path('app_bot/update/<int:pk>/',bot_update,name='bot_update'),
-    path('app_bot/delete/<int:pk>/',bot_delete,name = 'bot_delete'),
+    path('bot/', bot_list,name='bot_list'),
+    path('bot/create/',bot_create,name = 'bot_create'),
+    path('bot/<int:pk>/',bot_detail,name = 'bot_detail'),
+    path('bot/update/<int:pk>/',bot_update,name='bot_update'),
+    path('bot/delete/<int:pk>/',bot_delete,name = 'bot_delete'),
 
     path('<int:botId>/intent/create/', intent_create, name='intent_create'),
     path('<int:botId>/intent/', intent_list, name='intent_list'),

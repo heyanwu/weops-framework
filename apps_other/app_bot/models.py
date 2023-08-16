@@ -13,8 +13,8 @@ class Bot(models.Model):
     icon = models.CharField(max_length=255, null=False)
     name = models.CharField(max_length=20, null=False, blank=False, unique=True)
     introduction = models.TextField(max_length=255, null=True, blank=True)
-    creatUser = models.CharField(max_length=255, null=False)
-    creatDate = models.DateTimeField(default=timezone.now)
+    created_User = models.CharField(max_length=255, null=False)
+    created_Date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
