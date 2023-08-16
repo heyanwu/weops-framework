@@ -18,7 +18,7 @@ class ConfFixture(object):
     BACKEND_TYPE = "bk_token"
     if settings.LOGIN_METHOD == "local":
         # 如果是本地登录，使用当前LoginBackend
-        USER_BACKEND = 'bk_token.backends.LoginBackend'
+        USER_BACKEND = 'bk_local.backends.LoginBackend'
         LOGIN_REQUIRED_MIDDLEWARE = "bk_local.middlewares.LocalLoginRequiredMiddleware"
     elif settings.LOGIN_METHOD == "blueking":
         # 如果是蓝鲸登录，使用TokenBackend
