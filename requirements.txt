@@ -73,3 +73,8 @@ wheel==0.37.1
 PyYAML==6.0
 wrapt==1.14.1
 django-versionlog==1.6.0
+
+
+#
+django-simpleui==2023.3.1
+drf-yasg==1.17.0

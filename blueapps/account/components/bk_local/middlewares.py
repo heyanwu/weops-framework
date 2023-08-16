@@ -37,56 +37,24 @@ logger = logging.getLogger("component")
 cache = caches["login_db"]
 
 
-class LoginRequiredMiddleware(MiddlewareMixin):
+class LocalLoginRequiredMiddleware(MiddlewareMixin):
     def process_view(self, request, view, args, kwargs):
+        #验证当前的url
+        current_page_url = request.get_full_path()
+        #验证当前用户是否登录
+        current_user = request.user
+        if current_user.is_staff is False:
+            if 'admin' not in current_page_url:
+                return HttpResponseRedirect(reverse('admin:index'))
 
-        """
-        Login paas by two ways
-        1. views decorated with 'login_exempt' keyword
-        2. User has logged in calling auth.login
-        """
-        if hasattr(request, "is_wechat") and request.is_wechat():
-            return None
-
-        if hasattr(request, "is_bk_jwt") and request.is_bk_jwt():
-            return None
-
-        if hasattr(request, "is_rio") and request.is_rio():
-            return None
-
-        if getattr(view, "login_exempt", False):
-            return None
-
-        # 先做数据清洗再执行逻辑
-        form = AuthenticationForm(request.COOKIES)
-        if form.is_valid():
-            bk_token = form.cleaned_data["bk_token"]
-            session_key = request.session.session_key
-            if session_key:
-                # 确认 cookie 中的 ticket 和 cache 中的是否一致
-                cache_session = cache.get(session_key)
-                is_match = cache_session and bk_token == cache_session.get("bk_token")
-                if is_match and request.user.is_authenticated:
-                    return None
-
-            user = auth.authenticate(request=request, bk_token=bk_token)
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = auth.authenticate(request,username=username,password=password)
             if user is not None:
-                auth.login(request, user)
-                get_addr_by_request(request)
-                # ip_addr = get_addr_by_request(request)
-                # user.set_property(constants.LAST_LOGIN_ADDR_FIELD, ip_addr)
-                session_key = request.session.session_key
+                auth.login(request,user)
 
-                if not session_key:
-                    logger.info("删除了session_session_key")
-                    request.session.cycle_key()
-                session_key = request.session.session_key
-                cache.set(session_key, {"bk_token": bk_token}, settings.LOGIN_CACHE_EXPIRED)
-                # 登录成功，重新调用自身函数，即可退出
-                return self.process_view(request, view, args, kwargs)
-
-        handler = ResponseHandler(ConfFixture, settings)
-        return handler.build_401_response(request)
+        return None
 
     def process_response(self, request, response):
         return response

@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     "django.contrib.staticfiles",
     # account app
     "blueapps.account",
+    'drf_yasg',
 )
 
 MIDDLEWARE = (
