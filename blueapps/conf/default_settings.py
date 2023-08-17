@@ -31,7 +31,6 @@ SITE_ID = 1
 INSTALLED_APPS = (
     # "bkoauth",
     # 框架自定义命令
-    "simpleui",
     "blueapps.contrib.bk_commands",
     "django.contrib.admin",
     "django.contrib.auth",
