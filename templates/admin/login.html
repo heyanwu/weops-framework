@@ -6,7 +6,16 @@
     <p>{% trans '您暂时不能访问该站点的后台管理，这是以下原因造成的：' %}</p>
     <ul>
     {% if user.is_anonymous %}
+
         <li>{% trans '你还没登录，请重新刷新页面！' %}</li>
+        <form method="post">
+        {% csrf_token %}
+        <label for="username">用户名：</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">密码：</label>
+        <input type="password" id="password" name="password"><br><br>
+        <input type="submit" value="登录">
+    </form>
     {% else %}
         {% if not user.is_active %}
             <li>{% trans '用户' %}（<strong>{{ user.username }}</strong>）{% trans '未激活！' %}</li>
