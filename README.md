@@ -127,7 +127,64 @@ DATABASES = {
 }
 ```
 
-5、mysql本地登录验证流程 登录方式分为基于蓝鲸平台认证登录和基于本地mysql数据库用户验证登录
 
-基于蓝鲸平台认证登录时，在local_settings.py中修改开发环境为DEBUG=False
-基于本地mysql认证登录时，在local_settings.py中修改开发环境为DEBUG=True
+5、登录方式分为基于蓝鲸平台认证登录、基于本地mysql数据库用户验证登录、其他登录方式
+基于蓝鲸平台认证登录时，开发环境为blueking
+基于本地mysql认证登录时，开发环境为local
+![envs.json](./docs/img/env_login.png)
+
+
+
+设计其他登陆方式如下，以（mysql登录验证为例）：
+
+5.1 新建用户登录需求包
+在`blueapps/account/`目录下新建python包,在对应包下新建`backends.py`,`middlewares.py`,`models.py`文件
+![bk_local](./docs/img/bk_local.png)
+
+
+5.2 新建用户模型
+在`models.py`中新建user模型
+![models.py](./docs/img/model.png)
+
+
+5.3 新建用户登录中间件
+在`middlewares.py`中新建中间件`LocalLoginRequiredMiddleware`,此处填写用户登录提交方法
+![middlewares.py](./docs/img/middleware.png)
+
+
+5.4 新建用户登录验证
+在`backends.py`中新建`LoginBackend`，此处填写用户登录验证方法
+![backends.py](./docs/img/backend.png)
+
+
+5.5 将配置文件进行注册
+在`blueapps/account/sites/open`目录下的`conf.py`文件中注册`backend`及`middleware`
+![conf.py](./docs/img/login_register.png)
+
+
+5.6 设置环境变量
+通过判断不同的环境变量，用户进行不同方式的登录,在目录`config/`中修改`envs.json`,从而设置多种环境变量
+![envs.json](./docs/img/env_login.png)
+
+
+5.7 配置环境变量及修改重定向
+在目录`config/`中修改`default.py`文件中的缓存，配置环境变量，及修改用户登录的重定向（Django自带用户登录窗口，开发时可根据需要，是否修改重定向）
+![default.py](./docs/img/config_default.png)
+
+
+6、app项目开发
+在app开发接口时，选用drf-yasg进行接口开发，drf-yasg是基于Django REST framework的一个Swagger生成器,它使用Swagger规范(OpenAPI)来自动生成和维护API文档
+
+
+6.1 在`apps_other`目录下新建python包，包名必须以`app_` 开头
+
+
+6.2 在`apps_other/yourApp/`目录下新建`views.py`文件，接口示例如下：
+![views.py](./docs/img/bot_create_view.png)
+
+
+6.3 修改其他接口开发方式
+在根目录`urls.py`文件中，修改schema_view
+![urls.py](./docs/img/schema_view.png)
+
+
