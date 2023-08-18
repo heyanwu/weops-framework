@@ -41,17 +41,26 @@ def bot_list(request):
 
 #创建机器人
 @swagger_auto_schema(
-    method='post',
-    request_body=BotSerializer,# 设置请求体使用的序列化器
+    method='post',  #指定装饰器应该应用于哪些请求方法（GET、POST、PUT、DELETE 等）
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'icon': openapi.Schema(type=openapi.TYPE_STRING, example='FirstIcon',description="图标索引"),
+            'name': openapi.Schema(type=openapi.TYPE_STRING, example='ml',description="名字"),
+            'introduction': openapi.Schema(type=openapi.TYPE_STRING, example="firstBot",description="简介"),
+            'created_User': openapi.Schema(type=openapi.TYPE_STRING, example="me",description="用户创建者"),
+        },
+        required=['icon','name','created_User'],
+    ),
     responses={
         '200': BotSerializer,
         '401': 'Unauthorized',
         '404': 'Not Found',
-    },
-    operation_description='创建bot接口',
-    operation_id='bot_create',
-    tags=['bot'],
-    deprecated=False,
+    },  #用于指定不同响应状态码的详细说明
+    operation_description='创建bot接口',    #用于为操作提供更详细的说明
+    operation_id='bot_create',  #指定操作的唯一标识符，通常是一个字符串
+    tags=['bot'],   #用于为 API 操作指定标签
+    deprecated=False,   #用于标记一个 API 操作是否已被弃用
 )
 @api_view(['post'])
 def bot_create(request):
@@ -65,7 +74,16 @@ def bot_create(request):
 #更新机器人
 @swagger_auto_schema(
     method='put',
-    request_body=BotSerializer,# 设置请求体使用的序列化器
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'icon': openapi.Schema(type=openapi.TYPE_STRING, example='FirstIcon', description="图标索引"),
+            'name': openapi.Schema(type=openapi.TYPE_STRING, example='ml', description="名字"),
+            'introduction': openapi.Schema(type=openapi.TYPE_STRING, example="firstBot", description="简介"),
+            'created_User': openapi.Schema(type=openapi.TYPE_STRING, example="me", description="用户创建者"),
+        },
+        required=['icon', 'name', 'created_User'],
+    ),
     responses={
         '200': BotSerializer,
         '401': 'Unauthorized',
@@ -139,20 +157,24 @@ def bot_delete(request,pk):
 
 #对意图进行操作
 #首先是创建一个新的意图
-'''
-{
-    "intent":{
-                "name":"oracledb",
-                "example":["Oracle发生Oracle数据库应用类等待时间告警", 
-                    "[192.168.1.100](ip_address)\"上的Oracle数据库应用类等待时间异常",
-                    "发生Oracle数据库应用类等待时间告警,ip地址:\"[10.0.0.1](ip_address)"]
-            }
-    
-}
-'''
 @swagger_auto_schema(
     method='post',
-    request_body=IntentSerializer,# 设置请求体使用的序列化器
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'name': openapi.Schema(type=openapi.TYPE_STRING, description="名字"),
+            'example': openapi.Schema(type=openapi.TYPE_STRING, description="简介"),
+            'bot': openapi.Schema(type=openapi.TYPE_INTEGER, description="隶属bot"),
+        },
+        example={
+                'name': 'firstIntent',
+                'example': ["Oracle发生Oracle数据库应用类等待时间告警",
+                    "[192.168.1.100](ip_address)\"上的Oracle数据库应用类等待时间异常",
+                    "发生Oracle数据库应用类等待时间告警,ip地址:\"[10.0.0.1](ip_address)"],
+                'bot': 1,
+            },
+        required=['name'],
+    ),
     responses={
         '200': IntentSerializer,
         '401': 'Unauthorized',
@@ -234,7 +256,22 @@ def intent_delete(request,botId,intentId):
 #意图更新
 @swagger_auto_schema(
     method='put',
-    request_body=IntentSerializer,# 设置请求体使用的序列化器
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'name': openapi.Schema(type=openapi.TYPE_STRING, description="名字"),
+            'example': openapi.Schema(type=openapi.TYPE_STRING, description="简介"),
+            'bot': openapi.Schema(type=openapi.TYPE_INTEGER, description="隶属bot"),
+        },
+        example={
+            'name': 'firstIntent',
+            'example': ["Oracle发生Oracle数据库应用类等待时间告警",
+                        "[192.168.1.100](ip_address)\"上的Oracle数据库应用类等待时间异常",
+                        "发生Oracle数据库应用类等待时间告警,ip地址:\"[10.0.0.1](ip_address)"],
+            'bot': 1,
+        },
+        required=['name'],
+    ),
     responses={
         '200': IntentSerializer,
         '401': 'Unauthorized',
@@ -268,7 +305,41 @@ def intent_update(request, botId,intentId):
 
 @swagger_auto_schema(
     method='post',
-    request_body=UtteranceSerializer,# 设置请求体使用的序列化器
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'name': openapi.Schema(type=openapi.TYPE_STRING, description="名字"),
+            'example': openapi.Schema(type=openapi.TYPE_STRING, description="简介"),
+            'bot': openapi.Schema(type=openapi.TYPE_INTEGER, description="隶属bot"),
+        },
+        example={
+            'name': 'firstIntent',
+            'example': [{
+                        "text": "Here is an example message with buttons and a link.",
+                        "buttons":[
+                                {
+                                    "title": "Button 1",
+                                    "payload": "/button1"
+                                }
+                                ,
+                                {
+                                    "title": "Button 2",
+                                    "payload": "/button2"
+                                }
+                        ],
+                        "image": "https://example.com/image.png",
+                        "buttons_link":[
+                                {
+                                    "title": "Visit our website",
+                                    "url": "https://example.com"
+                                }
+                        ]
+                    }
+                    ],
+            'bot': 1,
+        },
+        required=['name'],
+    ),
     responses={
         '200': UtteranceSerializer,
         '401': 'Unauthorized',
@@ -344,7 +415,41 @@ def utterance_delete(request,botId,utteranceId):
 #响应更新
 @swagger_auto_schema(
     method='put',
-    request_body=UtteranceSerializer,# 设置请求体使用的序列化器
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'name': openapi.Schema(type=openapi.TYPE_STRING, description="名字"),
+            'example': openapi.Schema(type=openapi.TYPE_STRING, description="简介"),
+            'bot': openapi.Schema(type=openapi.TYPE_INTEGER, description="隶属bot"),
+        },
+        example={
+            'name': 'firstIntent',
+            'example': [{
+                "text": "Here is an example message with buttons and a link.",
+                "buttons": [
+                    {
+                        "title": "Button 1",
+                        "payload": "/button1"
+                    }
+                    ,
+                    {
+                        "title": "Button 2",
+                        "payload": "/button2"
+                    }
+                ],
+                "image": "https://example.com/image.png",
+                "buttons_link": [
+                    {
+                        "title": "Visit our website",
+                        "url": "https://example.com"
+                    }
+                ]
+            }
+            ],
+            'bot': 1,
+        },
+        required=['name'],
+    ),
     responses={
         '200': UtteranceSerializer,
         '401': 'Unauthorized',
@@ -377,37 +482,42 @@ def utterance_update(request, botId,utteranceId):
         return Response(serializer.errors, status=400)
 
 #故事类
-
-#新建一个故事，内容包括
-'''
-举例：
-{
-    "story":{
-        "icon":"firstIcon",
-        "name":"thirdName",
-        "story_type":"auto",
-        "example":[
-            {
-                "intent":{
-                    "name":"firstIntent",
-                    "pointToObject":""
-                }
-            },
-            {
-
-                "utterance":{
-                    "name":"utterance",
-                    "pointToObject":""
-                }
-            }
-        ]
-    }
-}
-'''
+#新建一个故事
 
 @swagger_auto_schema(
     method='post',
-    request_body=StorySerializer,# 设置请求体使用的序列化器
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'icon': openapi.Schema(type=openapi.TYPE_STRING, description="图标索引"),
+            'name': openapi.Schema(type=openapi.TYPE_STRING, description="名字"),
+            'story_type': openapi.Schema(type=openapi.TYPE_STRING, description="故事类型"),
+            'example': openapi.Schema(type=openapi.TYPE_STRING, description="样例"),
+            'bot': openapi.Schema(type=openapi.TYPE_INTEGER, description="隶属bot"),
+        },
+        example={
+            'icon': '1',
+            'name': 'firstIntent',
+            'story_type':'rule',
+            'example': [
+                        {
+                            "intent":{
+                                "name":"firstIntent",
+                                "pointToObject":""
+                            }
+                        },
+                        {
+
+                            "utterance":{
+                                "name":"utterance",
+                                "pointToObject":""
+                            }
+                        }
+                    ],
+            'bot': 1,
+        },
+        required=['icon','name','story_type'],
+    ),
     responses={
         '200': StorySerializer,
         '401': 'Unauthorized',
@@ -489,7 +599,38 @@ def story_delete(request,botId,storyId):
 #故事更新
 @swagger_auto_schema(
     method='put',
-    request_body=StorySerializer,# 设置请求体使用的序列化器,
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'icon': openapi.Schema(type=openapi.TYPE_STRING, description="图标索引"),
+            'name': openapi.Schema(type=openapi.TYPE_STRING, description="名字"),
+            'story_type': openapi.Schema(type=openapi.TYPE_STRING, description="故事类型"),
+            'example': openapi.Schema(type=openapi.TYPE_STRING, description="样例"),
+            'bot': openapi.Schema(type=openapi.TYPE_INTEGER, description="隶属bot"),
+        },
+        example={
+            'icon': '1',
+            'name': 'firstIntent',
+            'story_type': 'rule',
+            'example': [
+                {
+                    "intent": {
+                        "name": "firstIntent",
+                        "pointToObject": ""
+                    }
+                },
+                {
+
+                    "utterance": {
+                        "name": "utterance",
+                        "pointToObject": ""
+                    }
+                }
+            ],
+            'bot': 1,
+        },
+        required=['icon', 'name', 'story_type'],
+    ),
     responses={
         '200': StorySerializer,
         '401': 'Unauthorized',

@@ -1,0 +1,1 @@
+default_app_config = 'apps_other.app_bot.config.AppConfig'
