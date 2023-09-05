@@ -83,6 +83,15 @@ REDIS_PORT = os.environ.get("BKAPP_REDIS_PORT", "6379")
 REDIS_DB = os.environ.get("BKAPP_REDIS_DB", 0)
 AUTO_MATE_REDIS_DB = os.environ.get("BKAPP_AUTO_MATE_REDIS_DB", 11)
 LOGIN_METHOD = os.environ.get("BKAPP_LOGIN_METHOD", "local")
+
+GH_MINIO_ENDPOINT = os.environ.get("BKAPP_GH_MINIO_ENDPOINT", "10.10.26.236:9015")
+MINIO_EXTERNAL_ENDPOINT = os.environ.get("BKAPP_MINIO_EXTERNAL_ENDPOINT", "127.0.0.1:9000")
+GH_MINIO_EXTERNAL_ENDPOINT_USE_HTTPS = os.environ.get("BKAPP_GH_MINIO_EXTERNAL_ENDPOINT_USE_HTTPS", "true")
+GH_MINIO_ACCESS_KEY = os.environ.get("BKAPP_GH_MINIO_ACCESS_KEY", "6WVIL8GRLFsa0RU6Z0G3GPsSdsaDDASA")
+GH_MINIO_SECRET_KEY = os.environ.get("BKAPP_GH_MINIO_SECRET_KEY", "qm02lZjy2lZVFPwMnfN++sas")
+GH_MINIO_USE_HTTPS = os.environ.get("BKAPP_GH_MINIO_USE_HTTPS", "true")
+
+
 LOGIN_REDIRECT_URL = '/admin/' if os.environ.get("BKAPP_LOGIN_METHOD", "local") == "local" else '/accounts/profile/'
 
 
