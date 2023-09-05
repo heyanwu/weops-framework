@@ -16,5 +16,41 @@
     "env_key": "BKAPP_LOGIN_METHOD",
     "examples": "local",
     "desc": "local代表本地django登录、blueking代表蓝鲸登录、other代表第三方登录"
+  },
+   {
+    "source_key": "GH_MINIO_ENDPOINT",
+    "env_key": "BKAPP_GH_MINIO_ENDPOINT",
+    "examples": "127.0.0.1:9000",
+    "desc": "minio内部节点"
+  },
+  {
+    "source_key": "MINIO_EXTERNAL_ENDPOINT",
+    "env_key": "BKAPP_MINIO_EXTERNAL_ENDPOINT",
+    "examples": "127.0.0.1:9000",
+    "desc": "minio外部节点"
+  },
+  {
+    "source_key": "GH_MINIO_EXTERNAL_ENDPOINT_USE_HTTPS",
+    "env_key": "BKAPP_GH_MINIO_EXTERNAL_ENDPOINT_USE_HTTPS",
+    "examples": "true",
+    "desc": "minio外部节点是否是https"
+  },
+  {
+    "source_key": "GH_MINIO_ACCESS_KEY",
+    "env_key": "BKAPP_GH_MINIO_ACCESS_KEY",
+    "examples": "6WVIL8GRLFsa0RU6Z0G3GPsSdsaDDASA",
+    "desc": "minio的ACCESS KEY"
+  },
+  {
+    "source_key": "GH_MINIO_SECRET_KEY",
+    "env_key": "BKAPP_GH_MINIO_SECRET_KEY",
+    "examples": "qm02lZjy2lZVFPwMnfN++sas",
+    "desc": "minio的SECRET KEY"
+  },
+  {
+    "source_key": "GH_MINIO_USE_HTTPS",
+    "env_key": "BKAPP_GH_MINIO_USE_HTTPS",
+    "examples": "true",
+    "desc": "minio的是否是https"
   }
 ]

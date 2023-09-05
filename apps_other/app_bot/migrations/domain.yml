@@ -1,0 +1,58 @@
+version: '3.1'
+
+intents:
+- bye
+- greet
+- buy_pizza
+- form
+- home_no
+- home_yes
+entities:
+- bot
+- kairon_action_response
+- image
+- audio
+- video
+- document
+- doc_url
+- size
+- type
+- home
+- home-yes
+slots:
+  color:  #槽点名称
+    type: text/bool/categorical/float/list/any  #槽点类型（选一）
+#当类型是分类（categorical）的时候
+    values:
+      - low
+      - medium
+      - high
+#当类型是数值（float）的时候
+    min_value: -100.0
+    max_value:  100.0
+#槽的初始值和是否影响对话
+  influence_conversation: false
+  initial_value: 0
+# 以下是槽的映射
+    mappings:
+# 以下是实体类型的槽映射
+    - type: from_entity
+      entity: entity_name
+      intent: intent_name
+      not_intent: excluded_intent
+# 以下是意图类型的槽映射
+    - type: from_intent
+      value: my_value
+      intent: intent_name
+      not_intent: excluded_intent
+# 以下是文本类型的槽映射
+    - type: from_text
+      intent: intent_name
+      not_intent: excluded_intent
+actions:
+- validate_pizza_form
+forms:
+  pizza_form:    #表单名称
+    required_slots:    #表单用到的slots
+        - color
+        - size

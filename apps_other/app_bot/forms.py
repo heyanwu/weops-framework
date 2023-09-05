@@ -12,32 +12,25 @@ class IntentForm(forms.ModelForm):
     example_2 = forms.CharField(required=False, label="Example 2")
     example_3 = forms.CharField(required=False, label="Example 3")
     example_4 = forms.CharField(required=False, label="Example 4")
-    example_5 = forms.CharField(required=False, label="Example 5")
-    example_6 = forms.CharField(required=False, label="Example 6")
-    example_7 = forms.CharField(required=False, label="Example 7")
-    example_8 = forms.CharField(required=False, label="Example 8")
-    example_9 = forms.CharField(required=False, label="Example 9")
-    example_10 = forms.CharField(required=False, label="Example 10")
 
     def save(self, commit=True):
         instance = super().save(commit=False)
 
         # 将输入框中的数据合并成JSON列表
         example_list = []
-        for i in range(1,11):
+        for i in range(1,5):
             data = self.cleaned_data[f'example_{i}']
             if data != '':
                 example_list.append(data)
 
 
         # 将合并后的数据存储到example字段中
-        instance.example = json.dumps(example_list)
+        instance.example = example_list
 
         if commit:
             instance.save()
 
         return instance
-
 
 
 class UtteranceForm(forms.ModelForm):
@@ -49,26 +42,20 @@ class UtteranceForm(forms.ModelForm):
     example_2 = forms.CharField(required=False, label="Example 2")
     example_3 = forms.CharField(required=False, label="Example 3")
     example_4 = forms.CharField(required=False, label="Example 4")
-    example_5 = forms.CharField(required=False, label="Example 5")
-    example_6 = forms.CharField(required=False, label="Example 6")
-    example_7 = forms.CharField(required=False, label="Example 7")
-    example_8 = forms.CharField(required=False, label="Example 8")
-    example_9 = forms.CharField(required=False, label="Example 9")
-    example_10 = forms.CharField(required=False, label="Example 10")
 
     def save(self, commit=True):
         instance = super().save(commit=False)
 
         # 将输入框中的数据合并成JSON列表
         example_list = []
-        for i in range(1,11):
+        for i in range(1,5):
             data = self.cleaned_data[f'example_{i}']
             if data != '':
                 example_list.append(data)
 
 
         # 将合并后的数据存储到example字段中
-        instance.example = json.dumps(example_list)
+        instance.example = example_list
 
         if commit:
             instance.save()
@@ -84,26 +71,20 @@ class StoryForm(forms.ModelForm):
     example_2 = forms.CharField(required=False, label="Example 2")
     example_3 = forms.CharField(required=False, label="Example 3")
     example_4 = forms.CharField(required=False, label="Example 4")
-    example_5 = forms.CharField(required=False, label="Example 5")
-    example_6 = forms.CharField(required=False, label="Example 6")
-    example_7 = forms.CharField(required=False, label="Example 7")
-    example_8 = forms.CharField(required=False, label="Example 8")
-    example_9 = forms.CharField(required=False, label="Example 9")
-    example_10 = forms.CharField(required=False, label="Example 10")
 
     def save(self, commit=True):
         instance = super().save(commit=False)
 
         # 将输入框中的数据合并成JSON列表
         example_list = []
-        for i in range(1,11):
+        for i in range(1,5):
             data = self.cleaned_data[f'example_{i}']
             if data != '':
                 example_list.append(data)
 
 
         # 将合并后的数据存储到example字段中
-        instance.example = json.dumps(example_list)
+        instance.example = example_list
 
         if commit:
             instance.save()
