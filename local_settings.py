@@ -1,7 +1,7 @@
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "bot_db",  # noqa
+        "NAME": "bot",  # noqa
         "USER": "root",
         "PASSWORD": "1",
         "HOST": "localhost",
@@ -10,9 +10,6 @@ DATABASES = {
         "TEST": {"NAME": "bot_db", "CHARSET": "utf8", "COLLATION": "utf8_general_ci"},
     },
 }
-
-DEBUG=True
-
 
 
 

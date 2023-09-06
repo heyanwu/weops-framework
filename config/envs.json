@@ -30,8 +30,8 @@
     "desc": "minio外部节点"
   },
   {
-    "source_key": "GH_MINIO_EXTERNAL_ENDPOINT_USE_HTTPS",
-    "env_key": "BKAPP_GH_MINIO_EXTERNAL_ENDPOINT_USE_HTTPS",
+    "source_key": "MINIO_EXTERNAL_ENDPOINT_USE_HTTPS",
+    "env_key": "BKAPP_MINIO_EXTERNAL_ENDPOINT_USE_HTTPS",
     "examples": "true",
     "desc": "minio外部节点是否是https"
   },

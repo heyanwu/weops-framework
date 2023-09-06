@@ -36,12 +36,12 @@ class MinIoClient(object):
     def __init__(self, minio_client=False):
         if settings.DEBUG:
             self.endpoint = "localhost:9000"
-            self.access_key = "admin"
-            self.secret_key = "1234567890"
+            self.access_key = "minioadmin"
+            self.secret_key = "minioadmin"
             self.secure = False
         else:
-            self.access_key = settings.MINIO_ACCESS_KEY
-            self.secret_key = settings.MINIO_SECRET_KEY
+            self.access_key = settings.GH_MINIO_ACCESS_KEY
+            self.secret_key = settings.GH_MINIO_SECRET_KEY
             self.endpoint = settings.MINIO_EXTERNAL_ENDPOINT
             self.secure = settings.MINIO_EXTERNAL_ENDPOINT_USE_HTTPS
 
