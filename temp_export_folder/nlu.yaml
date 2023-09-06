@@ -1,0 +1,31 @@
+nlu:
+- intent: firstintent
+  examples:
+  - Oracle发生Oracle数据库应用类等待时间告警
+  - '[192.168.1.100](ip_address)"上的Oracle数据库应用类等待时间异常'
+  - 发生Oracle数据库应用类等待时间告警,ip地址:"[10.0.0.1](ip_address)
+- intent: test
+  examples:
+  - Oracle发生Oracle数据库应用类等待时间告警
+  - '[192.168.1.100](ip_address)"上的Oracle数据库应用类等待时间异常'
+  - 发生Oracle数据库应用类等待时间告警,ip地址:"[10.0.0.1](ip_address)
+- intent: testdemo
+  examples:
+  - Oracle发生Oracle数据库应用类等待时间告警
+  - '[192.168.1.100](ip_address)"上的Oracle数据库应用类等待时间异常'
+  - 发生Oracle数据库应用类等待时间告警,ip地址:"[10.0.0.1](ip_address)
+- intent: testdemo
+  examples:
+  - Oracle发生Oracle数据库应用类等待时间告警
+  - '[192.168.1.100](ip_address)"上的Oracle数据库应用类等待时间异常'
+  - 发生Oracle数据库应用类等待时间告警,ip地址:"[10.0.0.1](ip_address)
+- intent: firstIntent
+  examples:
+  - Oracle发生Oracle数据库应用类等待时间告警
+  - '[192.168.1.100](ip_address)"上的Oracle数据库应用类等待时间异常'
+  - 发生Oracle数据库应用类等待时间告警,ip地址:"[10.0.0.1](ip_address)
+- intent: hahaha
+  examples:
+  - Oracle发生Oracle数据库应用类等待时间告警
+  - '[192.168.1.100](ip_address)"上的Oracle数据库应用类等待时间异常'
+  - 发生Oracle数据库应用类等待时间告警,ip地址:"[10.0.0.1](ip_address)
