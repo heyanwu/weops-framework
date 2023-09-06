@@ -32,6 +32,111 @@ from .minio_utils import MinIoClient
 
 #Bot1 :data文件夹，action.py,domain.yml,config.yml
 
+def export_to_zip(request,botId):
+    # 创建临时文件夹
+    temp_dir = tempfile.mkdtemp()
+
+    # 创建 "Data" 文件夹
+    data_folder = os.path.join(temp_dir, "Data")
+    os.makedirs(data_folder, exist_ok=True)
+
+    # 生成YAML内容
+    nlu_data = nlu_yml(botId)
+    response_data = response_yml(botId)
+    story_data,rule_data = story_yml(botId)
+    intents_data,entities_data,slots_data,action_data,form_slot_data = domain_yml(botId)
+
+    # 将docs/config.yml的默认配置文件config.yml复制到临时文件夹中
+    local_config = "apps_other/app_bot/config.yml"
+    temp_yaml_path = os.path.join(temp_dir, "config.yml")
+    shutil.copy2(local_config, temp_yaml_path)
+
+    # 将actions的默认配置文件action.py复制到临时文件夹中
+    local_action = "apps_other/app_bot/action_form_validation.py"
+    temp_yaml_path = os.path.join(temp_dir, "action.py")
+    shutil.copy2(local_action, temp_yaml_path)
+
+    #domain.yml
+    yaml_file_path = os.path.join(temp_dir, "domain.yml")
+    with open(yaml_file_path, "w") as yaml_file:
+        yaml_file.write(f'version: "3.1"\n\n')
+        yaml_file.write(f'intents:\n')
+        yaml.dump(intents_data, yaml_file, sort_keys=False, allow_unicode=True)
+        yaml_file.write(f'entities:\n')
+        yaml.dump(entities_data, yaml_file, sort_keys=False, allow_unicode=True)
+        yaml_file.write(f'slots:\n')
+        yaml_content = yaml.dump(slots_data, indent=2,sort_keys=False, allow_unicode=True)
+        indented_yaml_str = "\n".join("  " + line for line in yaml_content.splitlines())
+        yaml_file.write(indented_yaml_str)
+        yaml_file.write(f'\nactions:\n')
+        yaml.dump(action_data, yaml_file, sort_keys=False, allow_unicode=True)
+        yaml_file.write(f'forms:\n')
+        yaml_content = yaml.dump(form_slot_data, indent=2, sort_keys=False, allow_unicode=True)
+        indented_yaml_str = "\n".join("  " + line for line in yaml_content.splitlines())
+        yaml_file.write(indented_yaml_str)
+
+
+    # nlu.yml文件
+    yaml_file_path = os.path.join(data_folder, "nlu.yml")
+    with open(yaml_file_path, "w") as yaml_file:
+        yaml_file.write(f'version: "3.1"\n')
+        yaml_file.write('nlu:' + '\n')
+        for nlu in nlu_data:
+            yaml_file.write('- intent: ' + nlu["intent"] + '\n')
+            yaml_file.write(f"  examples: |\n")
+            for example in nlu["examples"]:
+                yaml_file.write('    - ' + example + '\n')
+
+
+    # response.yml文件
+    yaml_file_path = os.path.join(data_folder, "response.yml")
+    with open(yaml_file_path, "w") as yaml_file:
+        yaml_file.write(f'version: "3.1"\n\n')
+        yaml.safe_dump(response_data, yaml_file, sort_keys=False, allow_unicode=True,indent=2)
+
+    # stories.yml文件
+    yaml_file_path = os.path.join(data_folder, "stories.yml")
+    with open(yaml_file_path, "w") as yaml_file:
+        yaml_file.write(f'version: "3.1"\n')
+        yaml_file.write('stories:' + '\n')
+        for story in story_data:
+            yaml_file.write('- story: ' + story["story"] + '\n')
+            yaml_file.write('  steps:' + '\n')
+            for key,value in story["steps"].items():
+                yaml_file.write('  - ' + key + ': ' + yaml.dump(value, default_style='plain',sort_keys=True, allow_unicode=True))
+
+    # rules.yml文件
+    yaml_file_path = os.path.join(data_folder, "rules.yml")
+    with open(yaml_file_path, "w") as yaml_file:
+        yaml_file.write(f'version: "3.1"\nrules:\n')
+        for rule in rule_data:
+            yaml_file.write('- rule: ' + rule["rule"] + '\n')
+            yaml_file.write('  steps:' + '\n')
+            for key, value in rule["steps"].items():
+                yaml_file.write('  - ' + key + ': ' + yaml.dump(value, default_style='plain', sort_keys=True,
+                                                                    allow_unicode=True))
+
+
+    # 创建ZIP文件
+    in_memory_zip = io.BytesIO()
+    with zipfile.ZipFile(in_memory_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for folder_root, _, filenames in os.walk(temp_dir):
+            for filename in filenames:
+                file_path = os.path.join(folder_root, filename)
+                arcname = os.path.relpath(file_path, temp_dir)
+                zipf.write(file_path, arcname)
+
+    # 删除临时文件夹
+    shutil.rmtree(temp_dir)
+
+    # 创建HTTP响应，将ZIP文件作为附件返回
+    response = HttpResponse(in_memory_zip.getvalue(), content_type='application/zip')
+
+    # 设置响应头，将文件名改为 "bot.zip"
+    response['Content-Disposition'] = 'attachment; filename=bot.zip'
+
+    return response
+
 def export_zip(request,botId):
     # 创建临时文件夹
     temp_dir = tempfile.mkdtemp()

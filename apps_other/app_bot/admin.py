@@ -11,17 +11,17 @@ admin.site.register(models.Bot)
 #注册intent
 class IntentAdmin(admin.ModelAdmin):
     form = IntentForm
-admin.site.register(Intent, IntentAdmin)
+admin.site.register(Intent)
 
 #注册utterance
 class UtteranceAdmin(admin.ModelAdmin):
     form = UtteranceForm
-admin.site.register(Utterance,UtteranceAdmin)
+admin.site.register(Utterance)
 
 #注册story
 class StoryAdmin(admin.ModelAdmin):
     form = StoryForm
-admin.site.register(Story,StoryAdmin)
+admin.site.register(Story)
 
 admin.site.register(Slot)
 admin.site.register(FormInfo)

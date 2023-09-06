@@ -6,11 +6,11 @@ from apps_other.app_bot.views import bot_list, bot_create, bot_detail, bot_updat
     intent_list, intent_delete, intent_update, utterance_create, utterance_list, utterance_delete, utterance_update, \
     story_create, story_list, story_delete, story_update, slot_create, slot_delete, slot_list, \
     slot_update, entity_list, form_create, form_list, form_slot_list, form_delete, formslot_delete, form_update, \
-    export_zip
+    export_zip, export_to_zip
 
 app_name = 'app_bot'
 urlpatterns = [
-    path('export/<int:botId>', export_zip, name='export_to_zip'),
+    path('export/<int:botId>', export_to_zip, name='export_to_zip'),
 
     path('bot/', bot_list,name='bot_list'),
     path('bot/create/',bot_create,name = 'bot_create'),

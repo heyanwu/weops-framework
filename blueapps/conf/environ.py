@@ -65,7 +65,7 @@ IS_LOCAL = not os.getenv("BKPAAS_ENVIRONMENT", False)
 
 # static root and dirs to find blueapps static
 if not IS_LOCAL:
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+    STATIC_ROOT = "staticfiles"
     FORCE_SCRIPT_NAME = SITE_URL
 
     # 开启子域名时静态文件统一使用子域名访问
