@@ -61,7 +61,7 @@ def domain_yml(botId):
         name = item["name"]
         intents_data.append(name)
         example = item["example"]
-        pattern = r'\[(.*?)\]\(.*?\)'
+        pattern = r'\[.*?\]\((.*?)\)'
         for example_i in example:
             entity_matches = re.findall(pattern, example_i)
             if len(entity_matches) != 0:
