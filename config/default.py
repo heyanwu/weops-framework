@@ -93,15 +93,6 @@ GH_MINIO_USE_HTTPS = os.environ.get("BKAPP_GH_MINIO_USE_HTTPS", "False")
 MINIO_EXTERNAL_ENDPOINT = os.environ.get("BKAPP_MINIO_EXTERNAL_ENDPOINT", "paas.weops.com:9015")
 MINIO_EXTERNAL_ENDPOINT_USE_HTTPS = os.environ.get("BKAPP_MINIO_EXTERNAL_ENDPOINT_USE_HTTPS", "False")
 
-STATICFILES_DIRS = [
-    # ...
-    os.path.join(BASE_DIR, 'drf_yasg', 'static'),
-]
-
-
-
-
-
 LOGIN_REDIRECT_URL = '/admin/' if os.environ.get("BKAPP_LOGIN_METHOD", "local") == "local" else '/accounts/profile/'
 
 
