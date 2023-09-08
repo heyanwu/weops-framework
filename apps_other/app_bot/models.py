@@ -1,3 +1,5 @@
+# _*_ coding:utf-8 _*_
+
 import re
 
 from django.db.models import UniqueConstraint
@@ -8,6 +10,7 @@ from django.utils import timezone
 from django.db import models
 import re
 from django.core.exceptions import ValidationError
+from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import URLValidator
 from django_mysql.models import JSONField
@@ -42,7 +45,7 @@ def validate_english(value):
 class Intent(models.Model):
     bot = models.ForeignKey(Bot, on_delete=models.CASCADE,verbose_name="bot引用")
     name = models.CharField(max_length=20,null=False,blank=False,validators=[validate_english],verbose_name="意图名字")
-    example = JSONField(default=list, help_text="列表格式",null=True,verbose_name="样例")
+    example = models.TextField(max_length=1024,default=list, help_text="列表格式",null=True,verbose_name="样例")
 
     def __str__(self):
         return self.name
@@ -64,8 +67,8 @@ def validate_utter_field(value):
 #响应
 class Utterance(models.Model):
     bot = models.ForeignKey(Bot, on_delete=models.CASCADE,verbose_name="bot引用")
-    name = models.CharField(max_length=20,null=False,blank=False,validators=[validate_utter_field],verbose_name="响应名字")
-    example = JSONField(default=list, help_text="列表格式",null=True,verbose_name="样例")
+    name = models.CharField(max_length=50,null=False,blank=False,validators=[validate_utter_field],verbose_name="响应名字")
+    example = models.TextField(default=list, help_text="列表格式",null=True,verbose_name="样例")
 
     def __str__(self):
         return self.name
@@ -84,7 +87,7 @@ class Story(models.Model):
     icon = models.CharField(max_length=255, null=False,verbose_name="图标")
     name = models.CharField(max_length=255, null=False, blank=False,verbose_name="故事名字")
     story_type = models.CharField(max_length=50,verbose_name="类型")
-    example = JSONField(default=dict, help_text="列表格式",null=True,verbose_name="样例")
+    example = models.TextField(max_length=1024,default=list, help_text="列表格式",null=True,verbose_name="样例")
 
     def __str__(self):
         return self.name
@@ -100,9 +103,9 @@ class Story(models.Model):
 class Slot(models.Model):
     bot = models.ForeignKey(Bot, on_delete=models.CASCADE, verbose_name="bot引用")
     name = models.CharField(max_length=50, null=False, blank=False,verbose_name="槽名",validators=[validate_english])
-    slot_type = JSONField(default=dict,blank=True,help_text="槽类型信息，使用JSON格式存储",verbose_name="槽类型")
+    slot_type = models.TextField(default=dict,blank=True,help_text="槽类型信息，请填写槽的具体信息",verbose_name="槽类型")
     influence = models.BooleanField(default=True,verbose_name="影响对话")
-    mapping = JSONField(default=list,blank=True,help_text="槽映射信息，使用JSON格式存储",verbose_name="槽映射")
+    mapping = models.TextField(default=list,blank=True,help_text="槽映射信息，请填写槽的具体信息",verbose_name="槽映射")
     initial_value = models.CharField(max_length=20,null=True,blank=True,verbose_name="初始值")
     def __str__(self):
         return self.name
@@ -134,9 +137,9 @@ class FormInfo(models.Model):
 class FormSlotInfo(models.Model):
     forminfo = models.ForeignKey(FormInfo, on_delete=models.CASCADE, verbose_name="表单引用")
     slot = models.ForeignKey(Slot,on_delete=models.CASCADE,verbose_name="槽")
-    validation = JSONField(default=list, blank=True, help_text="请输入该槽验证的值，即支持的范围，以“,”分隔",
+    validation = models.TextField(default=list, blank=True, help_text="请输入该槽验证的值，即支持的范围，以“,”分隔",
                            verbose_name="验证值")
-    question = JSONField(default=list,blank=True,help_text="bot回复的提示，使用JSON格式存储",verbose_name="询问列表")
+    question = models.TextField(default=list,blank=True,help_text="bot回复的提示",verbose_name="询问列表")
     valid_prompts = models.CharField(max_length=200, null=True, blank=True,verbose_name="有效提示")
     invalid_prompts = models.CharField(max_length=200, null=True, blank=True,verbose_name="无效提示")
     class Meta:

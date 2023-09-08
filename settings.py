@@ -77,3 +77,6 @@ for key, app_list in apps.items():
                     CELERY_IMPORTS += getattr(__module, _setting)
                 elif _setting == "add_middleware":
                     MIDDLEWARE += getattr(__module, _setting)
+DEFAULT_CHARSET = 'utf-8'
+USE_TZ = False
+USE_I18N = True

@@ -42,7 +42,7 @@ def export_to_zip(request,botId):
 
     # 生成YAML内容
     nlu_data = nlu_yml(botId)
-    response_data = response_yml(botId)
+    response_data,response_dict = response_yml(botId)
     story_data,rule_data = story_yml(botId)
     intents_data,entities_data,slots_data,action_data,form_slot_data = domain_yml(botId)
 
@@ -58,27 +58,51 @@ def export_to_zip(request,botId):
 
     #domain.yml
     yaml_file_path = os.path.join(temp_dir, "domain.yml")
-    with open(yaml_file_path, "w") as yaml_file:
+    with open(yaml_file_path, "w",encoding="utf-8") as yaml_file:
         yaml_file.write(f'version: "3.1"\n\n')
         yaml_file.write(f'intents:\n')
-        yaml.dump(intents_data, yaml_file, sort_keys=False, allow_unicode=True)
-        yaml_file.write(f'entities:\n')
-        yaml.dump(entities_data, yaml_file, sort_keys=False, allow_unicode=True)
-        yaml_file.write(f'slots:\n')
+        yaml_content = yaml.dump(intents_data, indent=2, sort_keys=False, allow_unicode=True)
+        indented_yaml_str = "\n".join("  " + line for line in yaml_content.splitlines())
+        yaml_file.write(indented_yaml_str)
+
+        yaml_file.write(f'\nentities:\n')
+        yaml_content = yaml.dump(entities_data, indent=2, sort_keys=False, allow_unicode=True)
+        indented_yaml_str = "\n".join("  " + line for line in yaml_content.splitlines())
+        yaml_file.write(indented_yaml_str)
+
+        yaml_file.write('\nresponses:\n')
+        for key, value in response_data.items():
+            if isinstance(value, list):
+                yaml_file.write(f'  {key}:\n')
+                for item in value:
+                    yaml_file.write(f'    - text: "{item}"\n')
+            elif isinstance(value, dict):
+                yaml_file.write(f'  {key}:\n')
+                for sub_key, sub_value in value.items():
+                    yaml_file.write(f'    - {sub_key}: "{sub_value}"\n')
+        if len(response_dict) != 0:
+            yaml_content = yaml.dump(response_dict, indent=2, sort_keys=False, allow_unicode=True)
+            indented_yaml_str = "\n".join("  " + line for line in yaml_content.splitlines())
+            yaml_file.write(indented_yaml_str)
+
+        yaml_file.write(f'\nslots:\n')
         yaml_content = yaml.dump(slots_data, indent=2,sort_keys=False, allow_unicode=True)
         indented_yaml_str = "\n".join("  " + line for line in yaml_content.splitlines())
         yaml_file.write(indented_yaml_str)
+
         yaml_file.write(f'\nactions:\n')
-        yaml.dump(action_data, yaml_file, sort_keys=False, allow_unicode=True)
+        yaml_content = yaml.dump(action_data, indent=2, sort_keys=False, allow_unicode=True)
+        indented_yaml_str = "\n".join("  " + line for line in yaml_content.splitlines())
+        yaml_file.write(indented_yaml_str)
+
         yaml_file.write(f'forms:\n')
         yaml_content = yaml.dump(form_slot_data, indent=2, sort_keys=False, allow_unicode=True)
         indented_yaml_str = "\n".join("  " + line for line in yaml_content.splitlines())
         yaml_file.write(indented_yaml_str)
 
-
     # nlu.yml文件
     yaml_file_path = os.path.join(data_folder, "nlu.yml")
-    with open(yaml_file_path, "w") as yaml_file:
+    with open(yaml_file_path, "w",encoding="utf-8") as yaml_file:
         yaml_file.write(f'version: "3.1"\n')
         yaml_file.write('nlu:' + '\n')
         for nlu in nlu_data:
@@ -90,13 +114,26 @@ def export_to_zip(request,botId):
 
     # response.yml文件
     yaml_file_path = os.path.join(data_folder, "response.yml")
-    with open(yaml_file_path, "w") as yaml_file:
-        yaml_file.write(f'version: "3.1"\n\n')
-        yaml.safe_dump(response_data, yaml_file, sort_keys=False, allow_unicode=True,indent=2)
+    with open(yaml_file_path, "w",encoding="utf-8") as yaml_file:
+        yaml_file.write(f'version: "3.1"\nresponses:\n')
+        for key, value in response_data.items():
+            if isinstance(value, list):
+                yaml_file.write(f'  {key}:\n')
+                for item in value:
+                    yaml_file.write(f'    - text: "{item}"\n')
+            elif isinstance(value, dict):
+                yaml_file.write(f'  {key}:\n')
+                for sub_key, sub_value in value.items():
+                    yaml_file.write(f'    - {sub_key}: "{sub_value}"\n')
+        if len(response_dict) != 0:
+            yaml_content = yaml.dump(response_dict, indent=2, sort_keys=False, allow_unicode=True)
+            indented_yaml_str = "\n".join("  " + line for line in yaml_content.splitlines())
+            yaml_file.write(indented_yaml_str)
+
 
     # stories.yml文件
     yaml_file_path = os.path.join(data_folder, "stories.yml")
-    with open(yaml_file_path, "w") as yaml_file:
+    with open(yaml_file_path, "w",encoding="utf-8") as yaml_file:
         yaml_file.write(f'version: "3.1"\n')
         yaml_file.write('stories:' + '\n')
         for story in story_data:
@@ -107,7 +144,7 @@ def export_to_zip(request,botId):
 
     # rules.yml文件
     yaml_file_path = os.path.join(data_folder, "rules.yml")
-    with open(yaml_file_path, "w") as yaml_file:
+    with open(yaml_file_path, "w",encoding="utf-8") as yaml_file:
         yaml_file.write(f'version: "3.1"\nrules:\n')
         for rule in rule_data:
             yaml_file.write('- rule: ' + rule["rule"] + '\n')
@@ -115,7 +152,6 @@ def export_to_zip(request,botId):
             for key, value in rule["steps"].items():
                 yaml_file.write('  - ' + key + ': ' + yaml.dump(value, default_style='plain', sort_keys=True,
                                                                     allow_unicode=True))
-
 
     # 创建ZIP文件
     in_memory_zip = io.BytesIO()
@@ -137,6 +173,7 @@ def export_to_zip(request,botId):
 
     return response
 
+'''
 def export_zip(request,botId):
     # 创建临时文件夹
     temp_dir = tempfile.mkdtemp()
@@ -147,9 +184,9 @@ def export_zip(request,botId):
 
     # 生成YAML内容
     nlu_data = nlu_yml(botId)
-    response_data = response_yml(botId)
-    story_data, rule_data = story_yml(botId)
-    intents_data, entities_data, slots_data, action_data, form_slot_data = domain_yml(botId)
+    # response_data = response_yml(botId)
+    # story_data, rule_data = story_yml(botId)
+    # intents_data, entities_data, slots_data, action_data, form_slot_data = domain_yml(botId)
 
     # 将docs/config.yml的默认配置文件config.yml复制到临时文件夹中
     local_config = "apps_other/app_bot/config.yml"
@@ -190,7 +227,7 @@ def export_zip(request,botId):
             yaml_file.write(f"  examples: |\n")
             for example in nlu["examples"]:
                 yaml_file.write('    - ' + example + '\n')
-
+    
     # response.yml文件
     yaml_file_path = os.path.join(data_folder, "response.yml")
     with open(yaml_file_path, "w") as yaml_file:
@@ -219,7 +256,6 @@ def export_zip(request,botId):
             for key, value in rule["steps"].items():
                 yaml_file.write('  - ' + key + ': ' + yaml.dump(value, default_style='plain', sort_keys=True,
                                                                 allow_unicode=True))
-
     # 创建ZIP文件
     in_memory_zip = io.BytesIO()
     with zipfile.ZipFile(in_memory_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
@@ -254,6 +290,7 @@ def export_zip(request,botId):
         return response
     else:
         return HttpResponse("下载失败")
+'''
 
 #获取机器人列表
 @swagger_auto_schema(
@@ -1313,23 +1350,30 @@ def form_create(request,botId):
                         form_slot_info_serializer.save()
 
                         # 同时将询问问题放在响应中
-                        utterance = Utterance()
-                        utterance.name = "utter_ask_" + slot_name
 
-                        # 将问题放在text中
-                        question_list = []
-                        for question_data in form_slot_info.question:
-                            question_list.append({
-                                "text": question_data,
-                            })
-                        utterance.example = question_list
-                        utterance.bot = Bot.objects.get(id=botId)
-                        serializer = UtteranceSerializer(
-                            data={'name': utterance.name, 'example': utterance.example, 'bot': utterance.bot.pk})
-                        if serializer.is_valid():
-                            serializer.save()
-                        else:
-                            return Response(serializer.errors, status=401)
+                        utter_ask_name = f"utter_ask_{slot_name}"
+                        bot_id = form_slot_info.slot.bot_id
+                        question = form_slot_info.question
+
+                        if question.startswith('"') and question.endswith('"'):
+                            question = question[1:-1]
+                        question = json.loads(question)
+                        utterance_ask, created = Utterance.objects.get_or_create(name=utter_ask_name, example=question,
+                                                                                 bot_id=bot_id)
+                        utterance_ask.save()
+
+                        utter_valid_name = f"utter_valid_{slot_name}"
+                        utter_invalid_name = f"utter_invalid_{slot_name}"
+                        valid = form_slot_info.valid_prompts
+                        invalid = form_slot_info.invalid_prompts
+                        utterance_valid, created = Utterance.objects.get_or_create(name=utter_valid_name, example=valid,
+                                                                                   bot_id=bot_id)
+                        utterance_valid.save()
+
+                        utterance_invalid, created = Utterance.objects.get_or_create(name=utter_invalid_name,
+                                                                                     example=invalid,
+                                                                                     bot_id=bot_id)
+                        utterance_invalid.save()
                     else:
                         return Response(form_slot_info_serializer.errors, status=401)
                 return Response("保存成功表单和槽详细信息.", status=200)
@@ -1637,21 +1681,31 @@ def form_update(request, botId, formId):
                 if form_slot_info_serializer.is_valid():
                     form_slot_info_serializer.save()
                     # 同时将询问问题放在响应中
-                    utter_name = "utter_ask_" + slot_name
-                    utterance, created = Utterance.objects.get_or_create(name=utter_name, bot_id=botId)
 
-                    # 将问题放在text中
-                    question_list = []
-                    for question_data in form_slot_info.question:
-                        question_list.append({
-                            "text": question_data,
-                        })
-                    utterance.example = question_list
-                    utterance.bot = Bot.objects.get(id=botId)
-                    serializer = UtteranceSerializer(
-                        data={ 'example': utterance.example, 'bot': utterance.bot.pk})
-                    if serializer.is_valid():
-                        serializer.save()
+                    utter_ask_name = f"utter_ask_{slot_name}"
+                    bot_id = form_slot_info.slot.bot_id
+                    question = form_slot_info.question
+
+                    if question.startswith('"') and question.endswith('"'):
+                        question = question[1:-1]
+                    question = json.loads(question)
+                    utterance_ask, created = Utterance.objects.get_or_create(name=utter_ask_name, example=question,
+                                                                             bot_id=bot_id)
+                    utterance_ask.save()
+
+                    utter_valid_name = f"utter_valid_{slot_name}"
+                    utter_invalid_name = f"utter_invalid_{slot_name}"
+                    valid = form_slot_info.valid_prompts
+                    invalid = form_slot_info.invalid_prompts
+                    utterance_valid, created = Utterance.objects.get_or_create(name=utter_valid_name, example=valid,
+                                                                               bot_id=bot_id)
+                    utterance_valid.save()
+
+                    utterance_invalid, created = Utterance.objects.get_or_create(name=utter_invalid_name,
+                                                                                 example=invalid,
+                                                                                 bot_id=bot_id)
+                    utterance_invalid.save()
+
                 else:
                     return Response(form_slot_info_serializer.errors, status=401)
 
