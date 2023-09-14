@@ -130,8 +130,7 @@ class ResponseHandler(object):
         """
         跳转到微信登录
         """
-        url = urllib.parse.urlparse(request.build_absolute_uri())
-        callback_url = url.scheme + r"://" + self._conf.WEIXIN_APP_EXTERNAL_HOST + request.get_full_path()
+        callback_url = self._conf.WEIXIN_APP_EXTERNAL_HOST + request.get_full_path()
         state = request.session["WEIXIN_OAUTH_STATE"]
         redirect_uri = self.get_oauth_redirect_url(callback_url, state)
         return HttpResponseRedirect(redirect_uri)
