@@ -4,12 +4,13 @@ import time
 
 from django.conf import settings
 from django.contrib import auth
-from django.http import JsonResponse
+from django.shortcuts import render
 from django.utils.deprecation import MiddlewareMixin
 
 from blueapps.account.components.weixin.forms import WeixinAuthenticationForm
 from blueapps.account.conf import ConfFixture
 from blueapps.account.handlers.response import ResponseHandler
+from blueapps.core.exceptions import BlueException
 from utils.token import generate_bk_token, set_bk_token_to_open_pass_db
 
 logger = logging.getLogger("component")
@@ -34,9 +35,14 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
                 state = form.cleaned_data.get("state")
 
                 if request.COOKIES.get("bk_token") or self.valid_state(request, state):
-                    user = auth.authenticate(request=request, code=code, is_wechat=True)
-                    if user is None:
-                        return JsonResponse({"result": False, "message": "用户验证失败!"})
+                    try:
+                        user = auth.authenticate(request=request, code=code, is_wechat=True)
+                    except BlueException as e:
+                        return render(
+                            request,
+                            "exception/login_fail.html",
+                            {"error_msg": e.message, "weixin_helper_url": settings.WEIXIN_HELPER_URL},
+                        )
                     if user and user.username != request.user.username:
                         auth.login(request, user)
                     if request.user.is_authenticated:
