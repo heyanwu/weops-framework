@@ -37,11 +37,11 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
                 if request.COOKIES.get("bk_token") or self.valid_state(request, state):
                     try:
                         user = auth.authenticate(request=request, code=code, is_wechat=True)
-                    except BlueException as e:
+                    except BlueException:
                         return render(
                             request,
                             "exception/login_fail.html",
-                            {"error_msg": e.message, "weixin_helper_url": settings.WEIXIN_HELPER_URL},
+                            {"admin_user": settings.WEIXIN_ADMIN_USER, "weixin_helper_url": settings.WEIXIN_HELPER_URL},
                         )
                     if user and user.username != request.user.username:
                         auth.login(request, user)

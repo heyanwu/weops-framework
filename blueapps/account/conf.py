@@ -62,3 +62,4 @@ SECOND_VERIFY_CONF = {
 
 
 WEIXIN_HELPER_URL = os.getenv("BKAPP_WEIXIN_HELPER_URL", "https://wedoc.canway.net/")
+WEIXIN_ADMIN_USER = os.getenv("BKAPP_WEIXIN_ADMIN_USER", "管理员")
