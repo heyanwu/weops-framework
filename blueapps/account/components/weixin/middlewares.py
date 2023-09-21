@@ -30,34 +30,33 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
         if not request.is_wechat():
             return None
 
-        login_exempt = getattr(view, "login_exempt", False)
-        if not (login_exempt or request.user.is_authenticated):
-            form = WeixinAuthenticationForm(request.GET)
-            if form.is_valid() or request.COOKIES.get("bk_token"):
-                code = form.cleaned_data.get("code")
-                state = form.cleaned_data.get("state")
+        if getattr(view, "login_exempt", False):
+            return None
+        form = WeixinAuthenticationForm(request.GET)
+        if form.is_valid() or request.COOKIES.get("bk_token"):
+            code = form.cleaned_data.get("code")
+            state = form.cleaned_data.get("state")
 
-                if request.COOKIES.get("bk_token") or self.valid_state(request, state):
-                    try:
-                        user = auth.authenticate(request=request, code=code, is_wechat=True)
-                    except BlueException:
-                        return render(
-                            request,
-                            "exception/login_fail.html",
-                            {"admin_user": WEIXIN_ADMIN_USER, "weixin_helper_url": WEIXIN_HELPER_URL},
-                        )
-                    if user and user.username != request.user.username:
-                        auth.login(request, user)
-                    if request.user.is_authenticated:
-                        # 登录成功，确认登陆正常后退出
-                        return None
-            else:
-                logger.error("微信请求链接，未检测到微信验证码，url：{}，params：{}".format(request.path_info, request.GET))
-            self.set_state(request)
-            handler = ResponseHandler(ConfFixture, settings)
-            # return handler.build_weixin_401_response(request)
-            return handler.redirect_weixin_login(request)
-        return None
+            if request.COOKIES.get("bk_token") or self.valid_state(request, state):
+                try:
+                    user = auth.authenticate(request=request, code=code, is_wechat=True)
+                except BlueException:
+                    return render(
+                        request,
+                        "exception/login_fail.html",
+                        {"admin_user": WEIXIN_ADMIN_USER, "weixin_helper_url": WEIXIN_HELPER_URL},
+                    )
+                if user and user.username != request.user.username:
+                    auth.login(request, user)
+                if request.user.is_authenticated:
+                    # 登录成功，确认登陆正常后退出
+                    return None
+        else:
+            logger.error("微信请求链接，未检测到微信验证码，url：{}，params：{}".format(request.path_info, request.GET))
+        self.set_state(request)
+        handler = ResponseHandler(ConfFixture, settings)
+        # return handler.build_weixin_401_response(request)
+        return handler.redirect_weixin_login(request)
 
     def process_response(self, request, response):
         if not request.is_wechat():
