@@ -1,4 +1,5 @@
 import logging
+import os
 import random
 import time
 
@@ -14,6 +15,8 @@ from blueapps.core.exceptions import BlueException
 from utils.token import generate_bk_token, set_bk_token_to_open_pass_db
 
 logger = logging.getLogger("component")
+WEIXIN_HELPER_URL = os.getenv("BKAPP_WEIXIN_HELPER_URL", "https://wedoc.canway.net/")
+WEIXIN_ADMIN_USER = os.getenv("BKAPP_WEIXIN_ADMIN_USER", "管理员")
 
 
 class WeixinLoginRequiredMiddleware(MiddlewareMixin):
@@ -41,7 +44,7 @@ class WeixinLoginRequiredMiddleware(MiddlewareMixin):
                         return render(
                             request,
                             "exception/login_fail.html",
-                            {"admin_user": settings.WEIXIN_ADMIN_USER, "weixin_helper_url": settings.WEIXIN_HELPER_URL},
+                            {"admin_user": WEIXIN_ADMIN_USER, "weixin_helper_url": WEIXIN_HELPER_URL},
                         )
                     if user and user.username != request.user.username:
                         auth.login(request, user)
