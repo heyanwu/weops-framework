@@ -82,7 +82,7 @@ REDIS_HOST = os.environ.get("BKAPP_REDIS_HOST", "127.0.0.1")
 REDIS_PORT = os.environ.get("BKAPP_REDIS_PORT", "6379")
 REDIS_DB = os.environ.get("BKAPP_REDIS_DB", 0)
 AUTO_MATE_REDIS_DB = os.environ.get("BKAPP_AUTO_MATE_REDIS_DB", 11)
-LOGIN_METHOD = os.environ.get("BKAPP_LOGIN_METHOD", "local")
+LOGIN_METHOD = os.environ.get("BKAPP_LOGIN_METHOD", "blueking")
 LOGIN_REDIRECT_URL = '/admin/' if os.environ.get("BKAPP_LOGIN_METHOD", "local") == "local" else '/accounts/profile/'
 
 
