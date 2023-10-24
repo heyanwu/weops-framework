@@ -15,7 +15,6 @@ from casbin_adapter.models import CasbinRule
 from django.db import transaction
 from django.db.models import Q
 
-# from apps.monitor_mgmt.casbin_policy.policy_constants import CLOUDMONITOR
 from apps.system_mgmt.casbin_package.cabin_inst_rbac import INST_MODEL, INST_NAMESPACE
 from apps.system_mgmt.casbin_package.policy_constants import (
     BASICMONITOR_OTHER,

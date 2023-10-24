@@ -12,24 +12,10 @@ from abc import ABCMeta
 from rest_framework import serializers
 
 #
-from apps.activation.models import Activation
-from apps.system_mgmt.constants import INSTANCE_MONITORS, PERMISSIONS_CHOICES
-from django.apps import apps
-#
 INST_PERMISSIONS_MODELS = {}  # 模型
-#
-#
-# class BaseInstPermissionsFormat(metaclass=ABCMeta):
-#     global INST_PERMISSIONS_MODELS
-#
-#     permissions = dict(PERMISSIONS_CHOICES)     #查询、管理权限
-#
-#     def __init_subclass__(cls, **kwargs):
-#         INST_PERMISSIONS_MODELS[cls.id] = cls
 
 import importlib
 
-from apps.activation.models import Activation
 from apps.system_mgmt.constants import INSTANCE_MONITORS
 
 
@@ -127,38 +113,12 @@ class InstPermissionsUtils(object):
         module = importlib.import_module(_path)
         return module
 
-    @staticmethod
-    def app_more_inst_obj():
-        app_map = {"monitor_mgmt": ["监控采集", "监控策略"], "big_screen": ["数字大屏", "运营报表"]}
-        return app_map
-
-    @classmethod
-    def get_activate_apps(cls):
-        """
-        返回已经激活的app模块
-        """
-        result = []
-        app_activate_map = cls.app_more_inst_obj()
-        instance = Activation.objects.last()
-        for app in instance.applications:
-            _app_data = app_activate_map.get(app)
-            if _app_data:
-                result.extend(_app_data)
-                continue
-            inst_app = cls.ACTIVATE_APP_MAPPING.get(app)
-            if inst_app:
-                result.append(inst_app)
-        return result
-
     @classmethod
     def get_model_attrs(cls):
         init_inst_permissions_models()
         result = []
-        activate_apps = cls.get_activate_apps()
 
         for model in INST_PERMISSIONS_MODELS.values():
-            if model.id not in activate_apps:
-                continue
             result.append(
                 {
                     "instance_type": model.id,

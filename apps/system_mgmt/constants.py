@@ -272,7 +272,6 @@ MENUS_DEFAULT = {
         "system/mgmt/user_manage",
         "system/mgmt/role_manage",
         "system/mgmt/sys_setting",
-        "activation",  # weops激活
     ],  # 系统管理
     "resource": [
         "resource/v2/host/inst",

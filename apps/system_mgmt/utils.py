@@ -5,11 +5,8 @@ from inspect import isfunction
 
 from django.db import transaction
 
-# from apps.monitor_mgmt.utils.monitor_sql_helper import MonitorSQLClient
-# from apps.syslog.models import AlarmStrategy
+
 from apps.system_mgmt.constants import (
-    BASIC_MONITOR,
-    BASIC_MONITOR_POLICY,
     DB_APPS,
     DB_APPS_DISPLAY_NAME,
     DB_NORMAL_USER,
@@ -26,11 +23,9 @@ from blueking.component.shortcuts import get_client_by_user
 from common.bk_api_utils.cc import BkApiCCUtils
 from common.bk_api_utils.usermanager import BKUserApiCCUtils
 from common.casbin_inst_service import CasBinInstService
-from common.token import get_bk_token
 from common.utils import split_list
 from utils import constants, exceptions
 from utils.app_log import celery_logger as logger
-from utils.app_utils import AppUtils
 from utils.decorators import catch_exception, time_consuming
 
 
