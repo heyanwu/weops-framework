@@ -11,11 +11,26 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express o
 specific language governing permissions and limitations under the License.
 """
 import os
+import traceback
 
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.urls import path
+from rest_framework.routers import SimpleRouter
+from django.conf.urls import include, url
+from rest_framework.routers import SimpleRouter
+
+from apps.system_mgmt.views import (
+    InstancesPermissionsModelViewSet,
+    MenuManageModelViewSet,
+    OperationLogViewSet,
+    RoleManageViewSet,
+    SysSettingViewSet,
+    SysUserViewSet,
+    UserManageViewSet,
+    login_info,
+)
 
 urlpatterns = [
     url(r"^admin/", admin.site.urls),
@@ -41,43 +56,57 @@ for key, app_list in apps.items():
     for i in dir_list:
         urlpatterns.append(url(r"^{}/".format(i), include(f"{key}.{i}.urls")))  # noqa
 
-if settings.RUN_MODE == "DEVELOP":
-    """
-    开发时添加SWAGGER API DOC
-    访问地址: http://dev.cwbk.com:8000/docs/
-    """
-    from rest_framework import permissions
-    from drf_yasg.views import get_schema_view
-    from drf_yasg import openapi
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
-    from django.urls import path
-    from rest_framework import permissions
-    from drf_yasg.views import get_schema_view
-    from drf_yasg import openapi
+schema_view = get_schema_view(
+    openapi.Info(
+        title="API文档",
+        default_version='v1',
+        description="API接口文档",
+        terms_of_service="https://www.example.com/policies/terms/",
+        contact=openapi.Contact(email="contact@example.com"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
-    schema_view = get_schema_view(
-        openapi.Info(
-            title="API文档",
-            default_version='v1',
-            description="API接口文档",
-            terms_of_service="https://www.example.com/policies/terms/",
-            contact=openapi.Contact(email="contact@example.com"),
-            license=openapi.License(name="BSD License"),
-        ),
-        public=True,
-        permission_classes=(permissions.AllowAny,),
-    )
+urlpatterns += [
+    url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    url('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+]
 
-    urlpatterns += [
-        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-        path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    ]
+urlpatterns += [
+    # 系统管理
+    url(r"^system/mgmt/", include("apps.system_mgmt.urls")),
+    url(r"^login_info/$", login_info),
 
-    urlpatterns += [url(r"^docs/$", schema_view)]
+]
 
-try:
-    from custom_urls import urlpatterns as custom_url
+urlpatterns += [url(r"^docs/$", schema_view)]
 
-    urlpatterns += custom_url
-except ImportError:
-    pass
+# 添加视图集路由
+router = SimpleRouter()
+
+# 3.5版本用户管理
+
+router.register(r"system/mgmt/user_manage", UserManageViewSet, basename="sys-user")
+
+# 3.5版本角色管理
+router.register(r"system/mgmt/role_manage", RoleManageViewSet, basename="sys-role")
+
+router.register(r"system/mgmt/menu_manage", MenuManageModelViewSet, basename="sys-menu")
+
+router.register(r"system/mgmt/inst_permissions", InstancesPermissionsModelViewSet, basename="sys-permissions")
+
+# 系统用户操作
+router.register(r"system/mgmt/sys_users", SysUserViewSet, basename="sys-user")
+# 系统操作日志
+router.register(r"system/mgmt/operation_log", OperationLogViewSet, basename="sys-log")
+# 系统配置
+router.register(r"system/mgmt/sys_setting", SysSettingViewSet, basename="sys-setting")
+
+urlpatterns += router.urls
+
