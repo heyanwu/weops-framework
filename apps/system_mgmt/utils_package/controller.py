@@ -454,7 +454,7 @@ class UserController(object):
 
         # 删除角色policy
         transaction.on_commit(
-            lambda: sync_casbin_mesh_remove_policies(
+            lambda: sync_casbin_mesh_remove_policies.delay(
                 sec="g",
                 ptype="g",
                 rules=[[user_obj.bk_username, i] for i in delete_role],
@@ -463,7 +463,7 @@ class UserController(object):
 
         # 新增角色policy
         transaction.on_commit(
-            lambda: sync_casbin_mesh_add_policies(
+            lambda: sync_casbin_mesh_add_policies.delay(
                 sec="g", ptype="g", rules=[[user_obj.bk_username, i] for i in add_role]
             )
         )
@@ -612,7 +612,7 @@ class RoleController(object):
 
         # 删除角色 policy
         transaction.on_commit(
-            lambda: sync_casbin_mesh_remove_policies(
+            lambda: sync_casbin_mesh_remove_policies.delay(
                 sec="g",
                 ptype="g",
                 rules=[[username, instance.role_name] for username in usernames],
@@ -620,7 +620,7 @@ class RoleController(object):
         )
         # 删除policy
         transaction.on_commit(
-            lambda: sync_casbin_mesh_remove_filter_policies(
+            lambda: sync_casbin_mesh_remove_filter_policies.delay(
                 sec="p", ptype="p", field_index=0, field_values=[instance.role_name]
             )
         )
@@ -719,7 +719,7 @@ class RoleController(object):
             delete_policy_data = dict(sec="p", ptype="p", field_index=0, field_values=[instance.role_name])
 
             transaction.on_commit(
-                lambda: sync_casbin_mesh_remove_add_policies(
+                lambda: sync_casbin_mesh_remove_add_policies.delay(
                     create_data=add_policy_data, delete_data=delete_policy_data
                 )
             )
