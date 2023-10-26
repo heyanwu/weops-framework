@@ -61,7 +61,7 @@ class ConfFixture(object):
 
     # 用户 OAUTH 认证链接 https://xxx.com/connect/oauth2/authorize
     WEIXIN_OAUTH_URL = "https://open.weixin.qq.com/connect/oauth2/authorize"
-    WEIXIN_APP_EXTERNAL_HOST = os.environ.get("BKAPP_WEIXIN_APP_EXTERNAL_HOST", "paas.weops.com")
+    WEIXIN_APP_EXTERNAL_HOST = os.environ.get("BKAPP_WEIXIN_APP_EXTERNAL_HOST", "http://paas.weops.com")
     # WEIXIN_LOGIN_URL = settings.SITE_URL + "account/weixin/login/"
     WEIXIN_LOGIN_URL = settings.SITE_URL + "mobile/"
 

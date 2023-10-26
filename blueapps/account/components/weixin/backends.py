@@ -46,13 +46,10 @@ class WeixinBackend(ModelBackend):
             if user:
                 return user
         if not code:
-            return 0
+            return None
 
         # result, user_info = self.verify_weixin_code(code)
-        result, user_info = self.get_weixin_user(code)
-
-        if not result:
-            return 0
+        user_info = self.get_weixin_user(code)
 
         user_model = get_user_model()
         try:
@@ -75,27 +72,23 @@ class WeixinBackend(ModelBackend):
     def get_weixin_user(self, code):
         result, query_param = WechatUtils.check_login_code(code)
         if not result:
-            return False, None
-        try:
-            data = send(ConfFixture.WEIXIN_INFO_URL, "GET", query_param)
-            if data.get("errcode") and data.get("errcode") != 0:
-                logger.error("通过微信授权码，获取用户信息失败，errcode={}，errmsg={}".format(data["errcode"], data["errmsg"]))
-                return False, None
-            weixin_user_id = data["UserId"]
-            user = self.get_bk_user(weixin_user_id)
-            return True, user
-        except BlueException:
-            logger.exception("通过微信授权码，获取用户信息异常")
-            return False, None
+            raise BlueException("微信账号认证失败")
+        data = send(ConfFixture.WEIXIN_INFO_URL, "GET", query_param)
+        if data.get("errcode") and data.get("errcode") != 0:
+            logger.error("通过微信授权码，获取用户信息失败，errcode={}，errmsg={}".format(data["errcode"], data["errmsg"]))
+            raise BlueException("微信账号认证失败")
+        weixin_user_id = data["UserId"]
+        user = self.get_bk_user(weixin_user_id)
+        return user
 
     def get_bk_user(self, weixin_user_id):
-        client = get_client_by_user("admin")
-        result = client.usermanage.retrieve_user(
+        esb_client = get_client_by_user("admin")
+        result = esb_client.usermanage.retrieve_user(
             {"id": weixin_user_id, "lookup_field": "wx_userid", "fields": "username,display_name"}
         )
-        if not result["result"]:
+        if not result["result"] or not result["data"]:
             logger.exception(result["message"])
-            raise BlueException()
+            raise BlueException("微信账号认证失败")
         return result["data"]
 
     def get_user_by_bk_token(self, bk_token):
