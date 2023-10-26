@@ -1,6 +1,6 @@
 from blueking.component.shortcuts import get_client_by_user
-from common.bk_api_utils.cc import BkApiCCUtils
-from constants.apps_constants import FILTER_CLASSIFICATIONS
+from apps.system_mgmt.common_utils.bk_api_utils.cc import BkApiCCUtils
+
 from utils.app_utils import AppUtils
 from utils.exceptions import GetDateError
 
@@ -20,8 +20,7 @@ class Menus(object):
             classification_list = BkApiCCUtils.search_classifications(client)
         except GetDateError:
             return []
-
-        # remove_list = FILTER_CLASSIFICATIONS + MENUS_REMOVE_CLASSIFICATIONS
+        from apps.system_mgmt.constants import FILTER_CLASSIFICATIONS
         remove_list = FILTER_CLASSIFICATIONS
         result = [i for i in classification_list if i["bk_classification_id"] not in remove_list]
 

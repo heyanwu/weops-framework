@@ -18,8 +18,7 @@ from apps.system_mgmt.constants import DB_APPS, DB_SUPER_USER
 from apps.system_mgmt.models import SysApps
 from apps.system_mgmt.utils import BizUtils, UserUtils
 from apps.system_mgmt.utils_package.db_utils import RolePermissionUtil
-from common.bk_api_utils.main import ApiManager
-from common.casbin_mesh_common import CasbinMeshApiServer
+from apps.system_mgmt.common_utils.casbin_mesh_common import CasbinMeshApiServer
 from utils.app_log import celery_logger as logger
 
 

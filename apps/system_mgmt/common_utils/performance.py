@@ -56,7 +56,7 @@ def fn_performance(
                     realfn_kwargs=real_kwargs,
                     threshold=threshold,
                 )
-                from common.bk_api_utils.main import ApiDefine
+                from apps.system_mgmt.common_utils.bk_api_utils.main import ApiDefine
 
                 if isinstance(real_args[0], ApiDefine):
                     msg += f"[url: {real_args[0].total_url}]\n"

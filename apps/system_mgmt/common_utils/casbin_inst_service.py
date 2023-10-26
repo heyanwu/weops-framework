@@ -6,7 +6,7 @@
 from apps.system_mgmt.casbin_package.cabin_inst_rbac import INST_NAMESPACE
 from apps.system_mgmt.constants import ALL_INST_PERMISSIONS_OBJ, BASIC_MONITOR, BASIC_MONITOR_POLICY, NOT_BASIC_MONITOR
 from apps.system_mgmt.models import InstancesPermissions, SysRole
-from common.casbin_mesh_common import CasbinMeshApiServer
+from apps.system_mgmt.common_utils.casbin_mesh_common import CasbinMeshApiServer
 from utils.app_log import logger
 
 

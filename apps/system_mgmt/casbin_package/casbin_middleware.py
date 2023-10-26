@@ -11,8 +11,8 @@ from django.utils.deprecation import MiddlewareMixin
 from apps.system_mgmt.casbin_package.policy_constants import MESH_NAMESPACE
 from apps.system_mgmt.constants import DB_SUPER_USER
 from apps.system_mgmt.models import SysRole, SysUser
-from common.casbin_mesh_common import CasbinMeshApiServer
-from common.casbin_register_policy import MATCH_PASS_PATH, PASS_PATH
+from apps.system_mgmt.common_utils.casbin_mesh_common import CasbinMeshApiServer
+from apps.system_mgmt.common_utils.casbin_register_policy import MATCH_PASS_PATH, PASS_PATH
 from utils.app_log import logger
 
 

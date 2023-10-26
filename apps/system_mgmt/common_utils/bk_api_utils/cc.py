@@ -1,8 +1,6 @@
 from django.core.cache import cache
-
-# from apps.resource.constants import BK_CLOUD_ID, BK_PROPERTY_NAME
 from blueking.component.client import BaseComponentClient
-from common.performance import fn_performance
+from apps.system_mgmt.common_utils.performance import fn_performance
 from utils import constants, exceptions
 from utils.app_log import logger
 from utils.decorators import get_all_page

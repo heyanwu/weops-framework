@@ -19,7 +19,7 @@ from apps.system_mgmt.constants import (
 from apps.system_mgmt.models import SysApps, SysRole, SysUser
 from apps.system_mgmt.utils import BizUtils
 from blueapps.account.models import User
-from common.casbin_mesh_common import CasbinMeshApiServer
+from apps.system_mgmt.common_utils.casbin_mesh_common import CasbinMeshApiServer
 from utils.exceptions import GetDateError
 
 

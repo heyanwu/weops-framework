@@ -20,7 +20,7 @@ import time
 
 from django.conf import settings
 from django.db import transaction
-from django.db.models import F, Q, QuerySet
+from django.db.models import Q, QuerySet
 from django.db.transaction import atomic
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -57,20 +57,20 @@ from apps.system_mgmt.serializers import (
     SysUserSerializer,
 )
 from apps.system_mgmt.user_manages import UserManageApi
-from apps.system_mgmt.utils import UserUtils, get_user_biz_list
+from apps.system_mgmt.utils import UserUtils
 from apps.system_mgmt.utils_package.controller import RoleController, UserController
 from apps.system_mgmt.utils_package.inst_permissions import InstPermissionsUtils
 from blueapps.account.components.weixin.weixin_utils import WechatUtils
 from blueapps.account.decorators import login_exempt
-from blueapps.core.exceptions.base import BlueException
+
 from blueking.component.shortcuts import get_client_by_user
-from common.bk_api_utils.main import ApiManager
-from common.casbin_inst_service import CasBinInstService
-from common.weops_proxy import get_access_point
-from constants.apps_constants import USER_CACHE_KEY
+from apps.system_mgmt.common_utils.bk_api_utils.main import ApiManager
+from apps.system_mgmt.common_utils.casbin_inst_service import CasBinInstService
+from apps.system_mgmt.common_utils.weops_proxy import get_access_point
+from apps.system_mgmt.constants import USER_CACHE_KEY
 from packages.drf.viewsets import ModelViewSet
 from utils.app_log import logger
-from utils.app_utils import AppUtils
+
 from utils.decorators import ApiLog, delete_cache_key_decorator
 from utils.usermgmt_sql_utils import UsermgmtSQLUtils
 
@@ -1026,7 +1026,6 @@ def generate_validate_code():
     md5_client = hashlib.md5()
     md5_client.update(code.encode("utf8"))
     return code, md5_client.hexdigest()
-
 @require_GET
 def login_info(request):
     pattern = re.compile(r"weops_saas[-_]+[vV]?([\d.]*)")

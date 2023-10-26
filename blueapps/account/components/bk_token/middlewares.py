@@ -14,19 +14,12 @@ specific language governing permissions and limitations under the License.
 import logging
 
 from django.conf import settings
-from django.contrib import auth, messages
+from django.contrib import auth
 from django.core.cache import caches
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse
-from django.utils.functional import SimpleLazyObject
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
 
 from blueapps.account.components.bk_token.forms import AuthenticationForm
 from blueapps.account.conf import ConfFixture
 from blueapps.account.handlers.response import ResponseHandler
-from blueapps.account.models import User
 
 try:
     from django.utils.deprecation import MiddlewareMixin

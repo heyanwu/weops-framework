@@ -6,8 +6,8 @@ from urllib.parse import urljoin
 import requests
 from django.conf import settings
 
-from common.performance import fn_performance
-from common.weops_proxy import get_first_access_point
+from apps.system_mgmt.common_utils.performance import fn_performance
+from apps.system_mgmt.common_utils.weops_proxy import get_first_access_point
 from utils.exceptions import CustomApiException
 from utils.tools import combomethod
 

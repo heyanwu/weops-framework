@@ -1,5 +1,4 @@
 import importlib
-import inspect
 import os
 from inspect import isfunction
 
@@ -20,10 +19,10 @@ from apps.system_mgmt.models import MenuManage, OperationLog, SysApps, SysRole, 
 from apps.system_mgmt.utils_package.casbin_utils import CasBinInstUtils, CasbinUtils
 from apps.system_mgmt.utils_package.db_utils import RolePermissionUtil
 from blueking.component.shortcuts import get_client_by_user
-from common.bk_api_utils.cc import BkApiCCUtils
-from common.bk_api_utils.usermanager import BKUserApiCCUtils
-from common.casbin_inst_service import CasBinInstService
-from common.utils import split_list
+from apps.system_mgmt.common_utils.bk_api_utils.cc import BkApiCCUtils
+from apps.system_mgmt.common_utils.bk_api_utils.usermanager import BKUserApiCCUtils
+from apps.system_mgmt.common_utils.casbin_inst_service import CasBinInstService
+from apps.system_mgmt.common_utils.utils import split_list
 from utils import constants, exceptions
 from utils.app_log import celery_logger as logger
 from utils.decorators import catch_exception, time_consuming

@@ -8,7 +8,7 @@ casbin_mesh 的接口逻辑
 """
 import typing
 
-from common.casbin_mesh_api import casin_server
+from apps.system_mgmt.common_utils.casbin_mesh_api import casin_server
 from utils.decorators import time_consuming
 
 

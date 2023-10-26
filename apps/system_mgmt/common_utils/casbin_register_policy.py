@@ -9,7 +9,7 @@
 import importlib
 import os
 
-from constants.sys_manage_constants import checkAuth, operateAuth
+from apps.system_mgmt.constants import checkAuth, operateAuth
 
 policy_file_name = "policy_constants"
 
@@ -45,13 +45,6 @@ class CasbinRegisterPolicy(object):
     def match_pass_policy(self):
         return self._match_pass_policy
 
-    # def activation_app_set(self):
-    #     from apps.activation.models import Activation
-    #     activation_obj = Activation.objects.last()
-    #     if activation_obj is None:
-    #         raise Exception("请先激活weops!")
-    #     return set(activation_obj.applications)
-
     def register_home_application(self):
         home_application_path = os.path.join(
             os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "home_application"
@@ -69,13 +62,11 @@ class CasbinRegisterPolicy(object):
         self._get_attrs(policy_file)
 
     def register_apps_policy(self):
-        apps_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "apps")
+        apps_path = "apps"
         for app_path in os.listdir(apps_path):
             app_abs_path = os.path.join(apps_path, app_path)
             if not os.path.isdir(app_abs_path):
                 continue
-            # if app_path in self.MENUS and app_path not in self.ACTIVATION_APP_SET:
-            #     continue
             casbin_policy_path = os.path.join(app_abs_path, "casbin_policy")
             if not os.path.isdir(casbin_policy_path):
                 continue

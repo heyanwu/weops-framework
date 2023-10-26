@@ -42,10 +42,10 @@ from apps.system_mgmt.constants import (
 from apps.system_mgmt.models import SysApps, SysRole, SysSetting
 from apps.system_mgmt.sys_setting import sys_setting
 from apps.system_mgmt.utils_package.dao import RoleModels
-from common.casbin_mesh_common import CasbinMeshApiServer
-from common.casbin_register_policy import POLICY_DICT
-from common.menu_service import Menus
-from common.utils import split_list
+from apps.system_mgmt.common_utils.casbin_mesh_common import CasbinMeshApiServer
+from apps.system_mgmt.common_utils.casbin_register_policy import POLICY_DICT
+from apps.system_mgmt.common_utils.menu_service import Menus
+from apps.system_mgmt.common_utils.utils import split_list
 from utils.app_log import logger
 
 

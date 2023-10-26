@@ -9,7 +9,7 @@
 # @File    : policy_constants.py
 # @Date    : 2022-07-01
 # @Author  : windyzhao
-from constants.sys_manage_constants import CREATE, DELETE, MODIFY, QUERY, checkAuth, operateAuth
+from apps.system_mgmt.constants import CREATE, DELETE, MODIFY, QUERY, checkAuth, operateAuth
 
 OPERATE_ENDSWITH = "Manage"
 CONFIG_IDS = "configFile"

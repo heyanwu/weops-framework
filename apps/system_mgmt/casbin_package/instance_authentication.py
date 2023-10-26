@@ -2,8 +2,8 @@ from apps.system_mgmt.casbin_package.cabin_inst_rbac import INST_NAMESPACE
 from apps.system_mgmt.constants import DB_SUPER_USER
 from apps.system_mgmt.models import InstancesPermissions, SysRole
 from blueapps.core.exceptions import RequestForbidden
-from common.casbin_inst_service import CasBinInstService
-from common.casbin_mesh_common import CasbinMeshApiServer
+from apps.system_mgmt.common_utils.casbin_inst_service import CasBinInstService
+from apps.system_mgmt.common_utils.casbin_mesh_common import CasbinMeshApiServer
 
 
 def is_super(username: str) -> bool:
