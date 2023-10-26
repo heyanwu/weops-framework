@@ -32,6 +32,7 @@ cache = caches["login_db"]
 
 class LoginRequiredMiddleware(MiddlewareMixin):
     def process_view(self, request, view, args, kwargs):
+
         """
         Login paas by two ways
         1. views decorated with 'login_exempt' keyword

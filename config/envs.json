@@ -10,5 +10,11 @@
     "env_key": "BKAPP_ENV_VARIABLE2",
     "examples": "value2",
     "desc": "推荐在开发时，settings中支持从环境变量获取的值设置为 ENV_VARIABLE2=os.getenv('BKAPP_ENV_VARIABLE2'， 'default or None')"
+  },
+  {
+    "source_key": "LOGIN_METHOD",
+    "env_key": "BKAPP_LOGIN_METHOD",
+    "examples": "local",
+    "desc": "local代表本地django登录、blueking代表蓝鲸登录、other代表第三方登录"
   }
 ]

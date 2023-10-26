@@ -14,11 +14,20 @@ import os
 
 from django.conf import settings
 
-
 class ConfFixture(object):
     BACKEND_TYPE = "bk_token"
-    USER_BACKEND = "bk_token.backends.TokenBackend"
-    LOGIN_REQUIRED_MIDDLEWARE = "bk_token.middlewares.LoginRequiredMiddleware"
+    if settings.LOGIN_METHOD == "local":
+        # 如果是本地登录，使用当前LoginBackend
+        USER_BACKEND = 'bk_local.backends.LoginBackend'
+        LOGIN_REQUIRED_MIDDLEWARE = "bk_local.middlewares.LocalLoginRequiredMiddleware"
+    elif settings.LOGIN_METHOD == "blueking":
+        # 如果是蓝鲸登录，使用TokenBackend
+        USER_BACKEND = 'bk_token.backends.TokenBackend'
+        LOGIN_REQUIRED_MIDDLEWARE = "bk_token.middlewares.LoginRequiredMiddleware"
+    else:
+        USER_BACKEND = ''
+        LOGIN_REQUIRED_MIDDLEWARE = ""
+
     USER_MODEL = "bk_token.models.UserProxy"
 
     CONSOLE_LOGIN_URL = settings.BK_PAAS_HOST

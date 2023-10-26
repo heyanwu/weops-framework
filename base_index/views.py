@@ -8,7 +8,7 @@ def home(request):
     首页
     """
     utils = AppUtils()
-    init_data = utils.interface_call('home_application.views', 'get_init_data', {})
+    init_data = utils.interface_call('apps.system_mgmt.views', 'get_init_data', {})
     response = render(request, "index.prod.html", init_data)
     response.set_cookie("current_ip", getattr(request, "current_ip", "127.0.0.1"), httponly=True)
     return response

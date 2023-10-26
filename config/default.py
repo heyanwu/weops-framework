@@ -41,6 +41,7 @@ INSTALLED_APPS += (  # noqa
     "rest_framework",
     "rest_framework_swagger",
     "base_index",
+    "casbin_adapter.apps.CasbinAdapterConfig",
 )
 
 # 这里是默认的中间件，大部分情况下，不需要改动
@@ -82,6 +83,9 @@ REDIS_HOST = os.environ.get("BKAPP_REDIS_HOST", "127.0.0.1")
 REDIS_PORT = os.environ.get("BKAPP_REDIS_PORT", "6379")
 REDIS_DB = os.environ.get("BKAPP_REDIS_DB", 0)
 AUTO_MATE_REDIS_DB = os.environ.get("BKAPP_AUTO_MATE_REDIS_DB", 11)
+LOGIN_METHOD = os.environ.get("BKAPP_LOGIN_METHOD", "blueking")
+LOGIN_REDIRECT_URL = '/admin/' if os.environ.get("BKAPP_LOGIN_METHOD", "local") == "local" else '/accounts/profile/'
+
 
 try:
     importlib.import_module("django_redis")
