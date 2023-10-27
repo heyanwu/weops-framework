@@ -30,35 +30,21 @@ django-redis==4.8.0
 redis==3.5.3
 Werkzeug==0.15.3
 
-
 python-dateutil==2.8.1
 wechatpy==1.8.13
 pycryptodome==3.9.8
-
-# for Excel
-openpyxl==3.0.5
-XlsxWriter==3.0.1
-urllib3==1.25.11
 
 # 全文检索
 django-haystack==3.1.1
 drf-haystack==1.8.11
 jieba_fast==0.53
 Whoosh==2.7.4
-
-# minio
-filetype==1.0.13
-minio==7.1.7
-django-minio-backend==3.3.2
-
 numpy==1.19.5
 PyMySQL==1.0.2
 
+# casbin
 casbin==1.16.8
 casbin-django-orm-adapter==0.0.1
-
-# uWSGI==2.0.20
-# uwsgidecorators==1.1.0
 
 # 补丁
 typing-extensions==3.7.4.3
@@ -67,9 +53,7 @@ pycryptodome==3.9.8
 setuptools==56.0.0
 wheel==0.37.1
 
-# weopsproxy
-# weopsproxy==1.0.2
-
+# other requirement
 PyYAML==6.0
 wrapt==1.14.1
 django-versionlog==1.6.0

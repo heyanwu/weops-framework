@@ -7,7 +7,6 @@ import requests
 from django.conf import settings
 
 from apps.system_mgmt.common_utils.performance import fn_performance
-from apps.system_mgmt.common_utils.weops_proxy import get_first_access_point
 from utils.exceptions import CustomApiException
 from utils.tools import combomethod
 
@@ -135,37 +134,6 @@ class ApiDefine(LinkConfig):
         }
         fun = http_map.get(self.method, self.http_get)
         return fun(headers, cookies, params, total_url)  # noqa
-
-
-class OpenApiDefine(ApiDefine):
-    def __init__(self, path, method, site="", description="", is_json=True, is_file=False):
-        super().__init__(site, path, method, description, is_json, is_file)
-
-    def __call__(self, **kwargs):
-        result = super(OpenApiDefine, self).__call__(**kwargs)
-        data = result.get("data", {})
-        return data
-
-    @property
-    def total_url(self):
-        url = self.config_kwargs.get("url")
-
-        if settings.DEBUG:
-            open_port = 8081
-            open_host = "127.0.0.1"
-        else:
-            if self.config_kwargs:
-                open_port = self.config_kwargs.get("port", 8081)
-                open_host = self.config_kwargs.get("path", "127.0.0.1")
-            else:
-                access_point = get_first_access_point()
-                open_host = access_point["ip"]
-                open_port = access_point.get("port", 8081)
-
-        if not url:
-            url = "http://{}:{}".format(open_host, open_port)
-        path = urljoin(url, self.path)
-        return path
 
 
 class WebApiDefine(ApiDefine):
@@ -674,37 +642,6 @@ class AutomationOperation(BaseAPIOperation):
         self.bk_obj_plugin_state = ApiDefine(self.site, "/open_api/bk_obj_plugin_state/", "GET", description="查询模型插件状态")
 
 
-class AutoMateOperation(BaseAPIOperation):
-    """
-    自动发现服务 auto-mate
-    """
-
-    def __init__(self):
-        super().__init__()
-        self.site = ""
-        self.exec_adhoc = OpenApiDefine("/api/ansible/v1/fast_execute_adhoc/", "POST", description="执行adhoc命令")
-        self.run_collect_task = OpenApiDefine("/api/collect/v1/run_collect_task/", "POST", description="快速执行采集任务")
-        self.test_run_collect_task = OpenApiDefine(
-            "/api/collect/v1/collect_task_test/", "POST", description="开发测试快速执行采集任务"
-        )
-        self.send_command = OpenApiDefine("/api/ssh/v1/send_command/", "POST", description="对网络设备执行远程命令")
-        self.get_task_status = OpenApiDefine("/api/task/v1/status/", "POST", description="获取采集任务状态")
-        self.get_task_result = OpenApiDefine("/api/task/v1/result/", "POST", description="获取采集任务结果")
-        self.stop_running_task = OpenApiDefine("/api/task/v1/stop_running_task/", "POST", description="停止运行中的任务")
-        self.get_tasks = OpenApiDefine("/api/task/v1/", "POST", description="获取采集任务列表")
-        self.cloud = OpenApiDefine("/api/cloud/v1/run/", "POST", description="通用云服务操作(增删改查)")
-
-        self.topology_scan = OpenApiDefine("/api/ssh/v1/topology_discovery/run", "POST", description="执行拓扑扫描")
-        self.get_scan_status = OpenApiDefine("/api/ssh/v1/topology_discovery/status", "GET", description="查询拓扑扫描状态")
-        self.get_scan_result = OpenApiDefine("/api/ssh/v1/topology_discovery/result", "POST", description="查询拓扑扫描结果")
-        self.run_monitor_collect_task = OpenApiDefine(
-            "/api/cloud/v1/monitor/monitor_collect/", "POST", description="监控采集(CMP)"
-        )
-        self.exec_adhoc_file = OpenApiDefine(
-            "/api/ansible/v1/upload_file_use_adhoc/", "POST", description="执行adhoc命令", is_file=True
-        )
-
-
 class BKSopsOperation(BaseAPIOperation):
     def __init__(self):
         super().__init__()
@@ -736,6 +673,5 @@ class ApiManager(LinkConfig):
     flow = FlowOperation()
     automation = AutomationOperation()
     bk_monitor = BKMonitorApiOperation()
-    auto_mate = AutoMateOperation()
     bk_sops = BKSopsOperation()
     node_man = NodeManOperation()

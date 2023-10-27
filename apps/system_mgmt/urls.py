@@ -25,5 +25,4 @@ urlpatterns = (
     url(r"open_set_user_roles/$", views.open_set_user_roles),
     url(r"get_is_need_two_factor/$", views.get_is_need_two_factor),
     url(r"send_validate_code_exempt/$", views.send_validate_code_exempt),
-    url(r"access_points/$", views.access_points),
 )
