@@ -29,7 +29,17 @@ services:
       CASBIN_MESH_REDIS_HOST: redis
       CASBIN_MESH_REDIS_PORT: 6379
     ports:
-      - "8000:8000"
+      - "4002:4002"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.5
+    container_name: keycloak-container
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8080:8080"
+    command: start-dev
 
 networks:
   default:
